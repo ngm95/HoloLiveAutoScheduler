@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD MAPPER 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="VideoMapper">
+	<select id="readNotInUpcomingOrLive" resultType="com.hololive.livestream.DTO.MemberDTO">
+		SELECT *
+		FROM Member
+		WHERE memberName NOT IN (SELECT memberName FROM Upcoming) AND memberName NOT IN (SELECT memberName FROM Live)
+	</select>
+
+	<insert id="createUpcoming">
+		INSERT INTO Upcoming (
+			memberName, channelId, videoId, scheduledStartTime, thumbnailPath, apiKey
+		) VALUES (
+			#{memberName}, #{channelId}, #{videoId}, #{scheduledStartTime}, #{thumbnailPath}, #{apiKey}
+		)
+	</insert>
+	
+	<select id="readUpcomingByVideoId" resultType="com.hololive.livestream.DTO.VideoDTO">
+		SELECT *
+		FROM Upcoming
+		WHERE videoId = #{videoId}
+	</select>
+	
+	<select id="readAllInUpcoming" resultType="com.hololive.livestream.DTO.VideoDTO">
+		SELECT Upcoming.*, Member.profilePath
+		FROM Upcoming, Member
+		WHERE Upcoming.memberName = Member.memberName
+		ORDER BY scheduledStartTime
+	</select>
+
+	<delete id="deleteUpcomingByVideoId">
+		DELETE FROM Upcoming
+		WHERE videoId = #{videoId}
+	</delete>
+	
+	<insert id="createLive">
+		INSERT INTO Live (
+			memberName, channelId, videoId, scheduledStartTime, actualStartTime, thumbnailPath, apiKey
+		) VALUES (
+			#{memberName}, #{channelId}, #{videoId}, #{scheduledStartTime}, #{actualStartTime}, #{thumbnailPath}, #{apiKey}
+		)
+	</insert>
+	
+	<select id="readLiveByVideoId" resultType="com.hololive.livestream.DTO.VideoDTO">
+		SELECT *
+		FROM Live
+		WHERE videoId = #{videoId}
+	</select>
+	
+	<select id="readAllInLive" resultType="com.hololive.livestream.DTO.VideoDTO">
+		SELECT Live.*, Member.profilePath
+		FROM Live, Member
+		WHERE Live.memberName = Member.memberName
+		ORDER BY scheduledStartTime
+	</select>
+	
+	<delete id="deleteLiveByVideoId">
+		DELETE FROM Live
+		WHERE videoId = #{videoId}
+	</delete>
+	
+	<insert id="createCompleted">
+		INSERT INTO Completed (
+			memberName, channelId, videoId, scheduledStartTime, actualStartTime, thumbnailPath, actualEndTime, apiKey
+		) VALUES (
+			#{memberName}, #{channelId}, #{videoId}, #{scheduledStartTime}, #{actualStartTime}, #{thumbnailPath}, #{actualEndTime}, #{apiKey}
+		)
+	</insert>
+	
+	<select id="readCompletedByVideoId" resultType="com.hololive.livestream.DTO.VideoDTO">
+		SELECT *
+		FROM Completed
+		WHERE videoId = #{videoId}
+	</select>
+	
+	<select id="readAllInCompleted" resultType="com.hololive.livestream.DTO.VideoDTO">
+		SELECT Completed.*, Member.profilePath
+		FROM Completed, Member
+		WHERE Completed.memberName = Member.memberName
+		ORDER BY scheduledStartTime
+	</select>
+	
+	<select id="readAllInCompletedIn2Days" resultType="com.hololive.livestream.DTO.VideoDTO">
+	<![CDATA[
+		SELECT Completed.*, Member.profilePath
+		FROM Completed, Member
+		WHERE Completed.memberName = Member.memberName AND DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 1 DAY), '%y.%m.%d %H:%i') <= scheduledStartTime
+		ORDER BY scheduledStartTime
+	]]>
+	</select>
+	
+	<delete id="deleteCompletedByVideoId">
+		DELETE FROM Completed
+		WHERE videoId = #{videoId}
+	</delete>
+</mapper>
