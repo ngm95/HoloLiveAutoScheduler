@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD MAPPER 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="BoardMapper">
+	<insert id="createUpcoming">
+		INSERT INTO Board (
+			title, videoId, videoDetail, date
+		) VALUES (
+			#{title}, #{videoId}, #{videoDetail}, #{date}
+		)
+	</insert>
+	
+	<select id="readLimitList" resultType="com.hololive.livestream.DTO.BoardDTO">
+	<![CDATA[
+		SELECT *
+		FROM Board
+		ORDER BY date DESC
+		LIMIT #{min}, #{max}
+	]]>
+	</select>
+	
+	<select id="readMaxCount" resultType="int">
+		SELECT Count(*)
+		FROM Board
+	</select>
+	
+	<select id="readBoardId" resultType="int">
+		SELECT boardId
+		FROM Board
+		WHERE title = #{title} AND videoId = #{videoId} AND love = #{love} AND dislike = #{dislike} AND date = #{date}
+	</select>
+	
+	<update id="increaseLike">
+		UPDATE Board
+		SET love = love + 1
+		WHERE boardId = #{boardId}
+	</update>
+	
+	<update id="increaseDislike">
+		UPDATE Board
+		SET dislike = dislike + 1
+		WHERE boardId = #{boardId}
+	</update>
+	
+	<update id="increaseViewed">
+		UPDATE Board
+		SET viewed = viewed + 1
+		WHERE boardId = #{boardId}
+	</update>
+</mapper>

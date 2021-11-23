@@ -12,7 +12,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 @EnableAsync
 public class AsyncConfig implements AsyncConfigurer {
 	private static int TASK_CORE_POOL_SIZE = 1;
-	private static int TASK_MAX_POOL_SIZE = 2;
+	private static int TASK_MAX_POOL_SIZE = 3;
 	private static int TAST_QUEUE_CAPACITY = 0;
 	private final String EXECUTOR_BEAN_NAME = "executor";
 	

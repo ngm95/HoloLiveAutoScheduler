@@ -16,6 +16,10 @@ public class VideoDAO {
 	@Autowired
 	SqlSessionTemplate template;
 	
+	public List<MemberDTO> readAllMember() {
+		return template.selectList(MAPPER + ".readAllMember");
+	}
+	
 	public List<MemberDTO> readNotInUpcomingOrLive() {
 		return template.selectList(MAPPER + ".readNotInUpcomingOrLive");
 	}
@@ -29,8 +33,16 @@ public class VideoDAO {
 		return template.selectOne(MAPPER + ".readUpcomingByVideoId", videoId);
 	}
 	
+	public List<VideoDTO> readAllInUpcomingIn1Day() {
+		return template.selectList(MAPPER + ".readAllInUpcomingIn1Day");
+	}
+	
 	public List<VideoDTO> readAllInUpcoming() {
 		return template.selectList(MAPPER + ".readAllInUpcoming");
+	}
+	
+	public void updateScheduledStartTime(VideoDTO videoDto) {
+		template.update(MAPPER + ".updateScheduledStartTime", videoDto);
 	}
 	
 	public void deleteUpcomingByVideoId(String videoId) {

@@ -9,6 +9,11 @@
 		FROM Member
 		WHERE memberName NOT IN (SELECT memberName FROM Upcoming) AND memberName NOT IN (SELECT memberName FROM Live)
 	</select>
+	
+	<select id="readAllMember" resultType="com.hololive.livestream.DTO.MemberDTO">
+		SELECT *
+		FROM Member
+	</select>
 
 	<insert id="createUpcoming">
 		INSERT INTO Upcoming (
@@ -24,6 +29,15 @@
 		WHERE videoId = #{videoId}
 	</select>
 	
+	<select id="readAllInUpcomingIn1Day" resultType="com.hololive.livestream.DTO.VideoDTO">
+	<![CDATA[
+		SELECT Upcoming.*, Member.profilePath
+		FROM Upcoming, Member
+		WHERE Upcoming.memberName = Member.memberName AND DATE_FORMAT(DATE_ADD(NOW(), INTERVAL 1 HOUR), '%y.%m.%d %H:%i') >= scheduledStartTime
+		ORDER BY scheduledStartTime
+	]]>
+	</select>
+	
 	<select id="readAllInUpcoming" resultType="com.hololive.livestream.DTO.VideoDTO">
 		SELECT Upcoming.*, Member.profilePath
 		FROM Upcoming, Member
@@ -35,6 +49,12 @@
 		DELETE FROM Upcoming
 		WHERE videoId = #{videoId}
 	</delete>
+	
+	<update id="updateScheduledStartTime">
+		UPDATE Upcoming
+		SET scheduledStartTime = #{scheduledStartTime}
+		WHERE videoId = #{videoId}
+	</update>
 	
 	<insert id="createLive">
 		INSERT INTO Live (
