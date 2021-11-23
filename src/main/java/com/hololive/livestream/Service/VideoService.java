@@ -192,7 +192,7 @@ public class VideoService {
 					System.out.println("\t\t Live 테이블에 삽입");
 				}
 				else {
-					if (format.format(liveStreaming.getScheduledStartTime()).compareTo(upcoming.getScheduledStartTime()) != 0) {
+					if (format.format(liveStreaming.getScheduledStartTime().getValue()).compareTo(upcoming.getScheduledStartTime()) != 0) {
 						System.out.println("\t\t" + upcoming.getMemberName() + "의 예약된 동영상의 예정 시작 시간이 변경되었습니다.");
 						upcoming.setScheduledStartTime(format.format(liveStreaming.getScheduledStartTime()));
 						videoDao.updateScheduledStartTime(upcoming);
@@ -212,8 +212,8 @@ public class VideoService {
 	public void checkLive() {
 		while (true) {
 			try {
-				// 4분동안 휴식
-				Thread.sleep(1000*60*4);
+				// 10분동안 휴식
+				Thread.sleep(1000*60*10);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -262,8 +262,8 @@ public class VideoService {
 				}
 			}
 			try {
-				// 6분동안 휴식
-				Thread.sleep(1000*60*6);
+				// 10분동안 휴식
+				Thread.sleep(1000*60*10);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
