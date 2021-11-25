@@ -20,7 +20,7 @@
 			</div>
 			<div id="videosList" class="d-flex"></div>
 		</div>
-		<a class="navbar-brand" href="/"><b>Hololive</b> Auto <b>Scheduler</b></a>
+		<a class="navbar-brand" href="/"><b>Holoduler JP</b></a>
 
 		<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
 			<div class="offcanvas-header">
@@ -29,14 +29,15 @@
 			</div>
 			<div class="offcanvas-body">
 				<ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-					<li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="/livestream/schedule" id="offcanvasNavbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"> 스케쥴 </a>
+					<li class="nav-item"><a class="nav-link active" aria-current="page" href="/">홈</a></li>
+					<li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="/livestream/schedule" id="offcanvasNavbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"> 스케줄 표 </a>
 						<ul class="dropdown-menu" aria-labelledby="offcanvasNavbarDropdown">
 							<li><a class="dropdown-item" href="/livestream/schedule#live">라이브 중인 방송</a></li>
 							<li><a class="dropdown-item" href="/livestream/schedule#upcoming">예약된 방송</a></li>
 							<li><a class="dropdown-item" href="/livestream/schedule#completed">종료된 최근 방송</a></li>
 						</ul>
 					</li>
-					<li class="nav-item"><a class="nav-link active" aria-current="page" href="/livestream/multiview">멀티뷰</a></li>
+					<li class="nav-item"><a class="nav-link active" aria-current="page" href="/livestream/multiview">멀티 뷰</a></li>
 					<li class="nav-item"><a class="nav-link active" aria-current="page" href="/board/main">게시판</a></li>
 				</ul>
 			</div>

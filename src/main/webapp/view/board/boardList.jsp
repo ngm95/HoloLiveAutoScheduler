@@ -132,7 +132,6 @@
 		<!-- 				</div> -->
 		<%-- 			</form:form> --%>
 		<!-- 		</div> -->
-		<%@ include file="/view/includes/09_footer.jsp"%>
 	</div>
 
 </body>

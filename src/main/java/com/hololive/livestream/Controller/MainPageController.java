@@ -8,6 +8,6 @@ public class MainPageController {
 	
 	@RequestMapping("/")
 	public String mainPage() {
-		return "redirect:/livestream/schedule";
+		return "/index";
 	}
 }
