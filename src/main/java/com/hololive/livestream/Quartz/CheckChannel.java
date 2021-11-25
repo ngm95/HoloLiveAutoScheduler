@@ -26,6 +26,7 @@ import com.google.api.services.youtube.model.SearchResult;
 import com.google.api.services.youtube.model.Video;
 import com.google.api.services.youtube.model.VideoLiveStreamingDetails;
 import com.hololive.livestream.DAO.VideoDAO;
+import com.hololive.livestream.DTO.APIDTO;
 import com.hololive.livestream.DTO.MemberDTO;
 import com.hololive.livestream.DTO.VideoDTO;
 
@@ -76,11 +77,15 @@ public class CheckChannel extends QuartzJobBean {
 				search.setEventType("upcoming");
 				search.setType("video");
 				search.setOrder("date");
-				search.setKey(member.getApiKey());
 				
 				search.setPublishedAfter(new DateTime(oneHourBefore));	// 1시간 전~지금까지 예약된 동영상 하나를 받아옴
 				
-				videoDao.increaseQuotas100(member.getApiKey());
+				APIDTO api = videoDao.readMinQuotasAPIKey();
+				if (api.getQuota() > 9900)
+					throw new RuntimeException("\t\t하루 할당량이 초과되었습니다.");
+				search.setKey(api.getApiKey());
+				videoDao.increaseQuotas100(api.getApiKey());
+				
 				SearchListResponse searchResponse = search.execute();
 				List<SearchResult> searchResultList = searchResponse.getItems();
 				
@@ -92,11 +97,15 @@ public class CheckChannel extends QuartzJobBean {
 						
 						YouTube.Videos.List videos = youtube.videos().list("liveStreamingDetails");
 						videos.setFields("items(id, liveStreamingDetails/scheduledStartTime)");
-						videos.setKey(member.getApiKey());     
 						videos.setId(rId.getVideoId());
 						videos.setMaxResults(1L); 
 						
-						videoDao.increaseQuotas1(member.getApiKey());
+						api = videoDao.readMinQuotasAPIKey();
+						if (api.getQuota() > 9999)
+							throw new RuntimeException("\t\t하루 할당량이 초과되었습니다.");
+						videos.setKey(api.getApiKey());  
+						videoDao.increaseQuotas1(api.getApiKey());
+						
 						List<Video> videoList = videos.execute().getItems();
 						VideoLiveStreamingDetails liveStreaming = videoList.get(0).getLiveStreamingDetails();
 						
@@ -112,6 +121,8 @@ public class CheckChannel extends QuartzJobBean {
 				}
 			} catch (IOException ioe) {
 				log.append("API 요청 시 오류가 발생했습니다.\n");
+			} catch (RuntimeException re) {
+				log.append(re.getMessage());
 			}
 		}
 		

@@ -11,7 +11,7 @@
 <body class="main-pages contents-wrap" style="margin-top: 80px">
 	<div class="container" style="height: 100%">
 		<%@ include file="/view/includes/03_header.jsp"%>
-		<div class="jumbotron">
+		<div class="jumbotron" style="background-color:#f1f1f1">
 			<p id="live" style="margin-bottom: 0px">
 			<h3>라이브 중인 방송</h3>
 			</p>

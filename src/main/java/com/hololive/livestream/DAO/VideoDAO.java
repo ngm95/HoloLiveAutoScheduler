@@ -6,6 +6,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.hololive.livestream.DTO.APIDTO;
 import com.hololive.livestream.DTO.MemberDTO;
 import com.hololive.livestream.DTO.VideoDTO;
 
@@ -85,6 +86,10 @@ public class VideoDAO {
 	
 	public void deleteCompletedByVideoId(String videoId) {
 		template.delete(MAPPER + ".deleteCompletedByVideoId", videoId);
+	}
+	
+	public APIDTO readMinQuotasAPIKey() {
+		return template.selectOne(MAPPER + ".readMinQuotasAPIKey");
 	}
 	
 	public void increaseQuotas100(String apiKey) {

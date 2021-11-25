@@ -15,7 +15,7 @@
 		<%@ include file="/view/includes/03_header.jsp"%>
 		<jsp:include page="/view/includes/noticeModal.jsp"></jsp:include>
 
-		<div class="jumbotron">
+		<div class="jumbotron" style="background-color:#f1f1f1">
 			<jsp:include page="/view/board/newPostModal.jsp"></jsp:include>
 			
 			<div class="d-flex justify-content-between">

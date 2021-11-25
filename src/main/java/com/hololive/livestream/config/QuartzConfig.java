@@ -50,21 +50,21 @@ public class QuartzConfig {
 				scheduler.deleteJob(resetQuota.getKey());
 			
 			
-			scheduler.scheduleJob(checkChannel, buildCronJobTrigger("0 0 * * * ?"));	// 모든 시각 0분 0초마다 실행
+			scheduler.scheduleJob(checkChannel, buildCronJobTrigger("10 0 * * * ?", 15));	// 모든 시각 0분 10초마다 실행
 			System.out.println("checkChannel");
-			scheduler.scheduleJob(checkUpcoming, buildCronJobTrigger("0 0/5 * * * ?"));	// 모든 시각 0분 0초에 시작해서 5분 간격으로 실행
+			scheduler.scheduleJob(checkUpcoming, buildCronJobTrigger("30 0/5 * * * ?", 10));	// 모든 시각 0분 30초에 시작해서 5분 간격으로 실행
 			System.out.println("checkUpcoming");
-			scheduler.scheduleJob(checkLive, buildCronJobTrigger("0 0/20 * * * ?"));	// 모든 시각 0분 0초에 시작해서 20분 간격으로 실행
+			scheduler.scheduleJob(checkLive, buildCronJobTrigger("50 0/20 * * * ?", 5));	// 모든 시각 0분 50초에 시작해서 20분 간격으로 실행
 			System.out.println("checkLive");
-			scheduler.scheduleJob(resetQuota, buildCronJobTrigger("0 0 17 * * ?"));		// 매일 오후 17시 0분 0초에 실행
+			scheduler.scheduleJob(resetQuota, buildCronJobTrigger("0 0 17 * * ?", 20));		// 매일 오후 17시 0분 0초에 실행
 			System.out.println("resetQuota");
 		} catch (SchedulerException se) {
 			System.out.println("error");
 		}
 	}
 
-	public Trigger buildCronJobTrigger(String scheduleExp) {
-		return TriggerBuilder.newTrigger().withSchedule(CronScheduleBuilder.cronSchedule(scheduleExp)).build();
+	public Trigger buildCronJobTrigger(String scheduleExp, int priority) {
+		return TriggerBuilder.newTrigger().withSchedule(CronScheduleBuilder.cronSchedule(scheduleExp)).withPriority(priority).build();
 	}
 
 	public Trigger buildSimpleJobTrigger(Integer hour) {

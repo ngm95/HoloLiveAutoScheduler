@@ -22,6 +22,7 @@ import com.google.api.services.youtube.YouTube;
 import com.google.api.services.youtube.model.Video;
 import com.google.api.services.youtube.model.VideoLiveStreamingDetails;
 import com.hololive.livestream.DAO.VideoDAO;
+import com.hololive.livestream.DTO.APIDTO;
 import com.hololive.livestream.DTO.VideoDTO;
 
 /**
@@ -74,11 +75,16 @@ public class CheckUpcoming extends QuartzJobBean {
 		try {
 			YouTube.Videos.List videos = youtube.videos().list("liveStreamingDetails");
 			videos.setFields("items(id, liveStreamingDetails/scheduledStartTime, liveStreamingDetails/actualStartTime)");
-			videos.setKey(upcoming.getApiKey());     
+			    
 			videos.setId(upcoming.getVideoId());
 			videos.setMaxResults(1L); 
 
-			videoDao.increaseQuotas1(upcoming.getApiKey());
+			APIDTO api = videoDao.readMinQuotasAPIKey();
+			if (api.getQuota() > 9999)
+				throw new RuntimeException("\t\t하루 할당량이 초과되었습니다.");
+			videos.setKey(api.getApiKey()); 
+			videoDao.increaseQuotas1(api.getApiKey());
+			
 			List<Video> videoList = videos.execute().getItems();
 
 			if (videoList.isEmpty()) {						// 반환 결과가 통째로 null이면 예약이 취소된 경우이므로 Upcoming테이블에서 삭제

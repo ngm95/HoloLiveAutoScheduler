@@ -22,6 +22,7 @@ import com.google.api.services.youtube.YouTube;
 import com.google.api.services.youtube.model.Video;
 import com.google.api.services.youtube.model.VideoLiveStreamingDetails;
 import com.hololive.livestream.DAO.VideoDAO;
+import com.hololive.livestream.DTO.APIDTO;
 import com.hololive.livestream.DTO.VideoDTO;
 
 /**
@@ -62,11 +63,15 @@ public class CheckLive extends QuartzJobBean {
 				YouTube.Videos.List videos = youtube.videos().list("liveStreamingDetails");
 				videos.setFields(
 						"items(id, liveStreamingDetails/scheduledStartTime, liveStreamingDetails/actualStartTime, liveStreamingDetails/actualEndTime)");
-				videos.setKey(live.getApiKey());
 				videos.setId(live.getVideoId());
 				videos.setMaxResults(1L);
-
-				videoDao.increaseQuotas1(live.getApiKey());
+				
+				APIDTO api = videoDao.readMinQuotasAPIKey();
+				if (api.getQuota() > 9999)
+					throw new RuntimeException("\t\t하루 할당량이 초과되었습니다.");
+				videos.setKey(api.getApiKey());
+				videoDao.increaseQuotas1(api.getApiKey());
+				
 				List<Video> videoList = videos.execute().getItems();
 
 				if (videoList.isEmpty()) { // 반환 결과가 통째로 null이면 동영상이 삭제되었거나 아카이브가 올라가기 이전이므로 Live 테이블에서 삭제하고 Completed
@@ -92,6 +97,8 @@ public class CheckLive extends QuartzJobBean {
 				}
 			} catch (IOException ioe) {
 				log.append("API 요청 시 오류가 발생했습니다.\n");
+			} catch(RuntimeException re) {
+				log.append(re.getMessage());
 			}
 		}
 

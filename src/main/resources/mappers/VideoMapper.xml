@@ -117,6 +117,12 @@
 		WHERE videoId = #{videoId}
 	</delete>
 	
+	<select id="readMinQuotasAPIKey" resultType="com.hololive.livestream.DTO.APIDTO">
+		SELECT *
+		FROM Api
+		WHERE quota = (SELECT MIN(quota) FROM Api)
+	</select>
+	
 	<update id="increaseQuotas100">
 		UPDATE Api
 		SET quota = quota + 100

@@ -8,11 +8,11 @@
 
 <title>멀티뷰</title>
 </head>
-<body class="main-pages contents-wrap" style="padding:0px 0px 0px 0px; margin-left:12px; margin-right:0px; margin-top:80px">
-	<div class="container-iframe" style="height: 100%; padding:0px 0px 0px 0px; margin:0px 0px 0px 0px">
+<body class="main-pages contents-wrap" style="padding:0px 0px 0px 0px; margin-left:12px; margin-right:0px; margin-top:80px; background-color:#f1f1f1">
+	<div class="container-iframe" style="height: 100%; padding:0px 0px 0px 0px; margin:0px 0px 0px 0px; background-color:#f1f1f1">
 		<%@ include file="/view/includes/03_header.jsp"%>
 		
-		<div class="jumbotron-iframe" style="padding:0px 0px 0px 0px; margin:0px 0px 0px 0px">
+		<div class="jumbotron-iframe" style="padding:0px 0px 0px 0px; margin:0px 0px 0px 0px; background-color:#f1f1f1">
 			<div id="iframeDiv" class="row row-cols-auto">
 				
 			</div>

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.hololive.livestream.DAO.VideoDAO;
+import com.hololive.livestream.DTO.APIDTO;
 import com.hololive.livestream.DTO.MemberDTO;
 import com.hololive.livestream.DTO.VideoDTO;
 
@@ -33,6 +34,10 @@ public class VideoService {
 	
 	public List<VideoDTO> readAllInCompletedIn1Days() {
 		return videoDao.readAllInCompletedIn1Days();
+	}
+	
+	public APIDTO readMinQuotasAPIKey() {
+		return videoDao.readMinQuotasAPIKey();
 	}
 	
 	public void increaseQuotas100(String apiKey) {
