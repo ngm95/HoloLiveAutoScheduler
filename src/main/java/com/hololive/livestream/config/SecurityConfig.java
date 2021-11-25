@@ -1,6 +1,5 @@
 package com.hololive.livestream.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -11,7 +10,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 
 @Configuration
@@ -31,18 +29,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests()
+		http.authorizeRequests()						// 이 프로젝트에서 로그인, 로그아웃은 구현하지 않음
 			.antMatchers("/**").permitAll();
-		http.formLogin()
-			.loginPage("/security/login")
-			.defaultSuccessUrl("/")
-			//.successHandler(new LoginSuccessHandler())
-			.failureForwardUrl("/security/denied")
-			.permitAll();
-		http.logout()
-			.logoutRequestMatcher(new AntPathRequestMatcher("/security/logout"))
-			.logoutSuccessUrl("/")
-			.invalidateHttpSession(true);
+		
 		http.exceptionHandling()
 			.accessDeniedPage("/security/denied");
 	}

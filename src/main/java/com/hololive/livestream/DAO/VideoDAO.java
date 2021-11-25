@@ -33,8 +33,8 @@ public class VideoDAO {
 		return template.selectOne(MAPPER + ".readUpcomingByVideoId", videoId);
 	}
 	
-	public List<VideoDTO> readAllInUpcomingIn1Day() {
-		return template.selectList(MAPPER + ".readAllInUpcomingIn1Day");
+	public List<VideoDTO> readAllInUpcomingIn1Hour() {
+		return template.selectList(MAPPER + ".readAllInUpcomingIn1Hour");
 	}
 	
 	public List<VideoDTO> readAllInUpcoming() {
@@ -79,11 +79,23 @@ public class VideoDAO {
 		return template.selectList(MAPPER + ".readAllInCompleted");
 	}
 	
-	public List<VideoDTO> readAllInCompletedIn2Days() {
-		return template.selectList(MAPPER + ".readAllInCompletedIn2Days");
+	public List<VideoDTO> readAllInCompletedIn1Days() {
+		return template.selectList(MAPPER + ".readAllInCompletedIn1Days");
 	}
 	
 	public void deleteCompletedByVideoId(String videoId) {
 		template.delete(MAPPER + ".deleteCompletedByVideoId", videoId);
+	}
+	
+	public void increaseQuotas100(String apiKey) {
+		template.update(MAPPER + ".increaseQuotas100", apiKey);
+	}
+	
+	public void increaseQuotas1(String apiKey) {
+		template.update(MAPPER + ".increaseQuotas1", apiKey);
+	}
+	
+	public void resetQuota() {
+		template.update(MAPPER + ".resetQuota");
 	}
 }

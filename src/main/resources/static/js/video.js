@@ -1,6 +1,6 @@
 $(document).ready(function() {
-	$('#iframeDiv').height((window.innerHeight - 90));
-	$('#iframeDiv').width((window.innerWidth - 10));
+	$('#iframeDiv').height((window.innerHeight - 80));
+	$('#iframeDiv').width((window.innerWidth));
 
 	var token = $("meta[name='_csrf_token']").attr("content");
 	var header = $("meta[name='_csrf_header']").attr("content");
@@ -13,21 +13,25 @@ $(document).ready(function() {
 			xhr.setRequestHeader(header, token);
 		},
 		success: function(videos) {
-			var input = "";
 			for (var i in videos) {
-				if (videos[i].actualStartTime != null)
-					input += "<div id=\"" + videos[i].videoId + "\" class=\"d-flex flex-column\"><button id=\"" + videos[i].videoId + "\" type=\"button\" class=\"btn btn-style\" style=\"padding:0px 0px 0px 0px\"><img src=\"" + videos[i].profilePath + "\" style=\"border-radius:50%; width:65px; border:2px red solid\"></button></div>";
-				else
-					input += "<div id=\"" + videos[i].videoId + "\" class=\"d-flex flex-column\"><button id=\"" + videos[i].videoId + "\" type=\"button\" class=\"btn btn-style\" style=\"padding:0px 0px 0px 0px\"><img src=\"" + videos[i].profilePath + "\" style=\"border-radius:50%; width:65px; border:2px green solid\"></button></div>";
+				var html = '<div class=\'d-flex flex-column\'><div class=\'d-flex flex-row\'><img src=\'' + videos[i].thumbnailPath + '\' width=\'100%\' height=\'100%\'></div><div class=\'d-flex flex-row\'>예정 시각 : ' + videos[i].scheduledStartTime + '</div></div>';
+				if (videos[i].actualStartTime != null) {
+					$('#videosList').append("<div id=\"" + videos[i].videoId + "\" class=\"d-flex flex-column\"><button name=\"tooltip\" id=\"" + videos[i].videoId + "\" type=\"button\" class=\"btn btn-style\" style=\"padding:0px 0px 0px 0px\" data-bs-toggle=\"tooltip\" data-bs-html=\"true\" title=\"" + html + "\"><img src=\"" + videos[i].profilePath + "\" style=\"border-radius:50%; width:65px; border:2px red solid\"></button></div>");
+				} else {
+					$('#videosList').append("<div id=\"" + videos[i].videoId + "\" class=\"d-flex flex-column\"><button name=\"tooltip\" id=\"" + videos[i].videoId + "\" type=\"button\" class=\"btn btn-style\" style=\"padding:0px 0px 0px 0px\" data-bs-toggle=\"tooltip\" data-bs-html=\"true\" title=\"" + html + "\"><img src=\"" + videos[i].profilePath + "\" style=\"border-radius:50%; width:65px; border:2px green solid\"></button></div>");
+				}
 			}
-			$('#videosList').append(input);
-			videoList = $('#videosList').find('button');
+			$('[name="tooltip"]').each(function() {
+				var tooltip = new bootstrap.Tooltip($(this), {
+					boundary: document.body // or document.querySelector('#boundary')
+				});
+			});
 		},
 		error: function() {
 			$('#videosList').append("<p>오류가 발생했습니다.</p>");
 		}
 	});
-	
+
 	$('#refresh').click(function() {
 		$('#videosList').empty();
 		$('#refresh').append('<a>Refresh...</a>');
@@ -40,15 +44,19 @@ $(document).ready(function() {
 				xhr.setRequestHeader(header, token);
 			},
 			success: function(videos) {
-				var input = "";
 				for (var i in videos) {
-					if (videos[i].actualStartTime != null)
-						input += "<div id=\"" + videos[i].videoId + "\" class=\"d-flex flex-column\"><button id=\"" + videos[i].videoId + "\" type=\"button\" class=\"btn btn-style\" style=\"padding:0px 0px 0px 0px\"><img src=\"" + videos[i].profilePath + "\" style=\"border-radius:50%; width:65px; border:2px red solid\"></button></div>";
-					else
-						input += "<div id=\"" + videos[i].videoId + "\" class=\"d-flex flex-column\"><button id=\"" + videos[i].videoId + "\" type=\"button\" class=\"btn btn-style\" style=\"padding:0px 0px 0px 0px\"><img src=\"" + videos[i].profilePath + "\" style=\"border-radius:50%; width:65px; border:2px green solid\"></button></div>";
+					var html = '<div class=\'d-flex flex-column\'><div class=\'d-flex flex-row\'><img src=\'' + videos[i].thumbnailPath + '\' width=\'100%\' height=\'100%\'></div><div class=\'d-flex flex-row\'>예정 시각 : ' + videos[i].scheduledStartTime + '</div></div>';
+					if (videos[i].actualStartTime != null) {
+						$('#videosList').append("<div id=\"" + videos[i].videoId + "\" class=\"d-flex flex-column\"><button name=\"tooltip\" id=\"" + videos[i].videoId + "\" type=\"button\" class=\"btn btn-style\" style=\"padding:0px 0px 0px 0px\" data-bs-toggle=\"tooltip\" data-bs-html=\"true\" title=\"" + html + "\"><img src=\"" + videos[i].profilePath + "\" style=\"border-radius:50%; width:65px; border:2px red solid\"></button></div>");
+					} else {
+						$('#videosList').append("<div id=\"" + videos[i].videoId + "\" class=\"d-flex flex-column\"><button name=\"tooltip\" id=\"" + videos[i].videoId + "\" type=\"button\" class=\"btn btn-style\" style=\"padding:0px 0px 0px 0px\" data-bs-toggle=\"tooltip\" data-bs-html=\"true\" title=\"" + html + "\"><img src=\"" + videos[i].profilePath + "\" style=\"border-radius:50%; width:65px; border:2px green solid\"></button></div>");
+					}
 				}
-				$('#videosList').append(input);
-				videoList = $('#videosList').find('button');
+				$('[name="tooltip"]').each(function() {
+					var tooltip = new bootstrap.Tooltip($(this), {
+						boundary: document.body // or document.querySelector('#boundary')
+					});
+				});
 			},
 			error: function() {
 				$('#videosList').append("<p>오류가 발생했습니다.</p>");
@@ -64,7 +72,7 @@ $(document).ready(function() {
 
 		var videoId = $(this).attr('id');
 		var unique = true;
-		
+
 		console.log(unique);
 
 		if (unique == true && iframes <= 4) {

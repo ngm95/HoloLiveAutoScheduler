@@ -6,9 +6,9 @@
 <head>
 <%@ include file="/view/includes/00_head.jsp"%>
 
-<title>메인 페이지</title>
+<title>멀티뷰</title>
 </head>
-<body class="main-pages contents-wrap" style="padding:0px 0px 0px 0px; margin-left:0px; margin-right:0px; margin-top:80px">
+<body class="main-pages contents-wrap" style="padding:0px 0px 0px 0px; margin-left:12px; margin-right:0px; margin-top:80px">
 	<div class="container-iframe" style="height: 100%; padding:0px 0px 0px 0px; margin:0px 0px 0px 0px">
 		<%@ include file="/view/includes/03_header.jsp"%>
 		

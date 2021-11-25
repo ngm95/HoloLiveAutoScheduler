@@ -12,6 +12,9 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 
 <script src="/js/video.js"></script>
+<c:if test="${not empty notice}">
+	<script src="/js/noticeModal.js"></script>
+</c:if>
 
 <meta id="_csrf_parameterName" name="_csrf_parameterName" content="${_csrf.parameterName}"/>
 <meta id="_csrf_token" name="_csrf_token" content="${_csrf.token}"/>

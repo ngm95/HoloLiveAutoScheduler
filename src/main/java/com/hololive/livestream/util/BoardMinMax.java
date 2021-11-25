@@ -10,10 +10,11 @@ public class BoardMinMax {
 	int paging;
 	String prev;
 	String next;
+	
 	public BoardMinMax(int limit) {
 		this.limit = limit;
 		this.min = 0;
-		this.max = 100;
+		this.max = 150;
 		this.paging = 1;
 		prev = "false";
 		if (limit <= max)
@@ -24,8 +25,8 @@ public class BoardMinMax {
 	public void next() {
 		if (next.equals("true")) {
 			this.min = max;
-			this.max += 100;
-			this.paging += 10;
+			this.max += 150;
+			this.paging += 15;
 			prev = "true";
 			if (min < limit && limit <= max)
 				next = "false";
@@ -34,8 +35,8 @@ public class BoardMinMax {
 	public void prev() {
 		if (prev.equals("true")) {
 			this.max = min;
-			this.min -= 100;
-			this.paging -= 10;
+			this.min -= 150;
+			this.paging -= 15;
 			next = "true";
 			if (min == 0)
 				prev = "false";

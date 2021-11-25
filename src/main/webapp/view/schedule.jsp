@@ -6,7 +6,7 @@
 <head>
 <%@ include file="/view/includes/00_head.jsp"%>
 
-<title>메인 페이지</title>
+<title>스케줄</title>
 </head>
 <body class="main-pages contents-wrap" style="margin-top:80px">
 	<div class="container" style="height: 100%">

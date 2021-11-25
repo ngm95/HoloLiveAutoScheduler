@@ -29,7 +29,7 @@
 		WHERE videoId = #{videoId}
 	</select>
 	
-	<select id="readAllInUpcomingIn1Day" resultType="com.hololive.livestream.DTO.VideoDTO">
+	<select id="readAllInUpcomingIn1Hour" resultType="com.hololive.livestream.DTO.VideoDTO">
 	<![CDATA[
 		SELECT Upcoming.*, Member.profilePath
 		FROM Upcoming, Member
@@ -103,7 +103,7 @@
 		ORDER BY scheduledStartTime
 	</select>
 	
-	<select id="readAllInCompletedIn2Days" resultType="com.hololive.livestream.DTO.VideoDTO">
+	<select id="readAllInCompletedIn1Days" resultType="com.hololive.livestream.DTO.VideoDTO">
 	<![CDATA[
 		SELECT Completed.*, Member.profilePath
 		FROM Completed, Member
@@ -116,4 +116,21 @@
 		DELETE FROM Completed
 		WHERE videoId = #{videoId}
 	</delete>
+	
+	<update id="increaseQuotas100">
+		UPDATE Api
+		SET quota = quota + 100
+		WHERE apiKey = #{apiKey}
+	</update>
+	
+	<update id="increaseQuotas1">
+		UPDATE Api
+		SET quota = quota + 1
+		WHERE apiKey = #{apiKey}
+	</update>
+	
+	<update id="resetQuota">
+		UPDATE Api
+		SET quota = 0
+	</update>
 </mapper>
