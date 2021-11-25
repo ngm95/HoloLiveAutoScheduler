@@ -20,7 +20,7 @@
 			</div>
 			<div id="videosList" class="d-flex"></div>
 		</div>
-		<a class="navbar-brand" href="/"><b>Holoduler JP</b></a>
+		<a class="navbar-brand" href="/"><b>Holoduler</b></a>
 
 		<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
 			<div class="offcanvas-header">

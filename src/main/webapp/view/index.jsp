@@ -13,11 +13,11 @@
 		<%@ include file="/view/includes/03_header.jsp"%>
 		
 		<div class="jumbotron" style="background-color:#f1f1f1">
-			<h1>Holoduler JP</h1>
+			<h1>Holoduler</h1>
 			<div class="jumbotron-board">
 				<p style="margin-bottom:0px">
-					주기적으로 홀로라이브 JP 멤버들의 유튜브 활동을 확인해 스케줄표를 구성하는 사이트입니다.<br/>
-					실시간 방송 상태와 다소 차이가 있을 수 있습니다.<br/>
+					주기적으로 홀로라이브 JP/EN 멤버들의 유튜브 활동을 확인해 스케줄표를 구성하는 사이트입니다.<br/>
+					실시간 방송 상태와 다소 시간 차이가 발생할 수 있습니다.<br/>
 					<br/>
 					<h2>메뉴 설명</h2>
 					&nbsp;&nbsp;&nbsp;&nbsp;- <a style="font-size:1.5em">스케줄 표</a> : 현재 라이브 중인 영상, 예약된 영상, 최근 1일 내에 종료된 영상 리스트를 보여줍니다.<br/>
