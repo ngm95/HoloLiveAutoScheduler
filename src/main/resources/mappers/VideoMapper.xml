@@ -121,6 +121,7 @@
 		SELECT *
 		FROM Api
 		WHERE quota = (SELECT MIN(quota) FROM Api)
+		GROUP BY quota
 	</select>
 	
 	<update id="increaseQuotas100">
