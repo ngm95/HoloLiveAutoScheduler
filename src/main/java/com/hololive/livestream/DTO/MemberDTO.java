@@ -7,5 +7,4 @@ public class MemberDTO {
 	String memberName;
 	String channelId;
 	String profilePath;
-	String apiKey;
 }

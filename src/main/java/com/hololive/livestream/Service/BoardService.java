@@ -18,12 +18,20 @@ public class BoardService {
 		boardDao.create(boardDto);
 	}
 	
+	public BoardDTO readByBoardId(int boardId) {
+		return boardDao.readByBoardId(boardId);
+	}
+	
 	public int readBoardId(BoardDTO boardDto) {
 		return boardDao.readBoardId(boardDto);
 	}
 	
 	public List<BoardDTO> readLimitList(BoardMinMax bmm) {
 		return boardDao.readLimitList(bmm);
+	}
+	
+	public List<BoardDTO> readAllLikeTitle(String title) {
+		return boardDao.readAllLikeTitle(title);
 	}
 	
 	public int readMaxCount() {
@@ -34,8 +42,16 @@ public class BoardService {
 		boardDao.increaseLike(boardId);
 	}
 	
+	public void decreaseLike(int boardId) {
+		boardDao.decreaseLike(boardId);
+	}
+	
 	public void increaseDislike(int boardId) {
 		boardDao.increaseDislike(boardId);
+	}
+	
+	public void decreaseDislike(int boardId) {
+		boardDao.decreaseDislike(boardId);
 	}
 	
 	public void increaseViewed(int boardId) {

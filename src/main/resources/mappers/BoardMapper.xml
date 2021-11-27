@@ -12,6 +12,12 @@
 		)
 	</insert>
 	
+	<select id="readByBoardId" resultType="com.hololive.livestream.DTO.BoardDTO">
+		SELECT *
+		FROM Board
+		WHERE boardId = #{boardId}
+	</select>
+	
 	<select id="readLimitList" resultType="com.hololive.livestream.DTO.BoardDTO">
 	<![CDATA[
 		SELECT *
@@ -32,15 +38,36 @@
 		WHERE title = #{title} AND videoId = #{videoId} AND love = #{love} AND dislike = #{dislike} AND date = #{date}
 	</select>
 	
+	<select id="readAllLikeTitle" resultType="com.hololive.livestream.DTO.BoardDTO">
+	<![CDATA[
+		SELECT *
+		FROM Board
+		WHERE title LIKE CONCAT('%',#{title},'%')
+		ORDER BY date DESC
+	]]>
+	</select>
+	
 	<update id="increaseLike">
 		UPDATE Board
 		SET love = love + 1
 		WHERE boardId = #{boardId}
 	</update>
 	
+	<update id="decreaseLike">
+		UPDATE Board
+		SET love = love - 1
+		WHERE boardId = #{boardId}
+	</update>
+	
 	<update id="increaseDislike">
 		UPDATE Board
 		SET dislike = dislike + 1
+		WHERE boardId = #{boardId}
+	</update>
+	
+	<update id="decreaseDislike">
+		UPDATE Board
+		SET dislike = dislike - 1
 		WHERE boardId = #{boardId}
 	</update>
 	

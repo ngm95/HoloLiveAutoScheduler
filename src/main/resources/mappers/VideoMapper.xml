@@ -17,9 +17,9 @@
 
 	<insert id="createUpcoming">
 		INSERT INTO Upcoming (
-			memberName, channelId, videoId, scheduledStartTime, thumbnailPath, apiKey
+			memberName, channelId, videoId, scheduledStartTime, thumbnailPath
 		) VALUES (
-			#{memberName}, #{channelId}, #{videoId}, #{scheduledStartTime}, #{thumbnailPath}, #{apiKey}
+			#{memberName}, #{channelId}, #{videoId}, #{scheduledStartTime}, #{thumbnailPath}
 		)
 	</insert>
 	
@@ -58,9 +58,9 @@
 	
 	<insert id="createLive">
 		INSERT INTO Live (
-			memberName, channelId, videoId, scheduledStartTime, actualStartTime, thumbnailPath, apiKey
+			memberName, channelId, videoId, scheduledStartTime, actualStartTime, thumbnailPath
 		) VALUES (
-			#{memberName}, #{channelId}, #{videoId}, #{scheduledStartTime}, #{actualStartTime}, #{thumbnailPath}, #{apiKey}
+			#{memberName}, #{channelId}, #{videoId}, #{scheduledStartTime}, #{actualStartTime}, #{thumbnailPath}
 		)
 	</insert>
 	
@@ -84,9 +84,9 @@
 	
 	<insert id="createCompleted">
 		INSERT INTO Completed (
-			memberName, channelId, videoId, scheduledStartTime, actualStartTime, thumbnailPath, actualEndTime, apiKey
+			memberName, channelId, videoId, scheduledStartTime, actualStartTime, thumbnailPath, actualEndTime
 		) VALUES (
-			#{memberName}, #{channelId}, #{videoId}, #{scheduledStartTime}, #{actualStartTime}, #{thumbnailPath}, #{actualEndTime}, #{apiKey}
+			#{memberName}, #{channelId}, #{videoId}, #{scheduledStartTime}, #{actualStartTime}, #{thumbnailPath}, #{actualEndTime}
 		)
 	</insert>
 	

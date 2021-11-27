@@ -16,14 +16,12 @@ public class VideoDTO {
 	String actualEndTime;
 	String thumbnailPath;
 	String profilePath;
-	String apiKey;
 	
-	public VideoDTO(String memberName, String channelId, String videoId, String scheduledStartTime, String thumbnailPath, String apiKey) {
+	public VideoDTO(String memberName, String channelId, String videoId, String scheduledStartTime, String thumbnailPath) {
 		this.memberName = memberName;
 		this.channelId = channelId;
 		this.videoId = videoId;
 		this.scheduledStartTime = scheduledStartTime;
 		this.thumbnailPath = thumbnailPath;
-		this.apiKey = apiKey;
 	}
 }

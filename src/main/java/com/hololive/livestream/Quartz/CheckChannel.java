@@ -112,7 +112,7 @@ public class CheckChannel extends QuartzJobBean {
 						String scheduledStartTime = format.format(liveStreaming.getScheduledStartTime().getValue());
 						
 						log.append("\t\t" + member.getMemberName() + "의 예약된 동영상이 있습니다.\n");
-						videoDao.createUpcoming(new VideoDTO(member.getMemberName(), member.getChannelId(), searchResult.getId().getVideoId(), scheduledStartTime, searchResult.getSnippet().getThumbnails().getMedium().getUrl(), member.getApiKey()));
+						videoDao.createUpcoming(new VideoDTO(member.getMemberName(), member.getChannelId(), searchResult.getId().getVideoId(), scheduledStartTime, searchResult.getSnippet().getThumbnails().getMedium().getUrl()));
 						log.append("\t\t\t" + "Upcoming 테이블에 저장 완료\n");
 					}
 				}

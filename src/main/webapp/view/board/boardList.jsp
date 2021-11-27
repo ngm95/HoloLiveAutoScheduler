@@ -15,9 +15,9 @@
 		<%@ include file="/view/includes/03_header.jsp"%>
 		<jsp:include page="/view/includes/noticeModal.jsp"></jsp:include>
 
-		<div class="jumbotron" style="background-color:#f1f1f1">
+		<div class="jumbotron" style="background-color: #f1f1f1">
 			<jsp:include page="/view/board/newPostModal.jsp"></jsp:include>
-			
+
 			<div class="d-flex justify-content-between">
 				<div class="d-flex">
 					<h3>
@@ -28,7 +28,7 @@
 					<button id="createBtn" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#postModal" style="float: right">새로운 글 작성</button>
 				</div>
 			</div>
-			
+
 			<div class="jumbotron-board">
 
 				<table class="table table-striped">
@@ -39,7 +39,7 @@
 							<th scope="col">좋아요</th>
 							<th scope="col">싫어요</th>
 							<th scope="col">조회수</th>
-							<th scope="col">시간</th>
+							<th scope="col">작성된 시간</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -50,7 +50,7 @@
 									<td></td>
 									<td colspan="4">작성된 혹은 해당되는 글이 없습니다.</td>
 								</tr>
-								<c:forEach begin="0" end="13" step="1">
+								<c:forEach begin="0" end="9" step="1">
 									<tr>
 										<th scope="row">#</th>
 										<td colspan="5"></td>
@@ -61,14 +61,14 @@
 								<c:forEach var="board" items="${boardList}">
 									<tr>
 										<th scope="row">${board.boardId}</th>
-										<td><a href="/board/boardDetail/${board.boardId}">${board.title}</a></td>
+										<td><a href="/board/boardDetail/${page}/${board.boardId}">${board.title}</a></td>
 										<td>${board.love}</td>
 										<td>${board.dislike}</td>
 										<td>${board.viewed}</td>
 										<td>${board.date}</td>
 									</tr>
 								</c:forEach>
-								<c:forEach begin="${fn:length(boardList)+1}" end="15" step="1">
+								<c:forEach begin="${fn:length(boardList)+1}" end="10" step="1">
 									<tr>
 										<th scope="row">#</th>
 										<td colspan="5"></td>
@@ -85,7 +85,7 @@
 			<ul class="pagination justify-content-center">
 				<c:choose>
 					<c:when test="${bmm.prev eq 'true'}">
-						<li class="page-item"><a class="page-link" href="/lol/board/prev">이전</a></li>
+						<li class="page-item"><a class="page-link" href="/board/main/prev">이전</a></li>
 					</c:when>
 					<c:otherwise>
 						<li class="page-item disabled"><a class="page-link">이전</a></li>
@@ -95,17 +95,17 @@
 				<c:forEach begin="0" end="9" step="1" varStatus="status">
 					<c:choose>
 						<c:when test="${bmm.limit - (bmm.paging+status.index)*10  <= -10}">
-							<li class="page-item disabled"><a class="page-link" href="/lol/board/${bmm.paging + status.index}">${bmm.paging + status.index}</a></li>
+							<li class="page-item disabled"><a class="page-link" href="/board/main/${bmm.paging + status.index}">${bmm.paging + status.index}</a></li>
 						</c:when>
 						<c:otherwise>
-							<li class="page-item"><a class="page-link" href="/lol/board/${bmm.paging + status.index}">${bmm.paging + status.index}</a></li>
+							<li class="page-item"><a class="page-link" href="/board/main/${bmm.paging + status.index}">${bmm.paging + status.index}</a></li>
 						</c:otherwise>
 					</c:choose>
 				</c:forEach>
 
 				<c:choose>
 					<c:when test="${bmm.next eq 'true'}">
-						<li class="page-item"><a class="page-link" href="/lol/board/next">다음</a></li>
+						<li class="page-item"><a class="page-link" href="/board/main/next">다음</a></li>
 					</c:when>
 					<c:otherwise>
 						<li class="page-item disabled"><a class="page-link">다음</a></li>
@@ -114,24 +114,19 @@
 			</ul>
 			</nav>
 		</div>
-
-
-
-
-
-		<!-- 		<div class="jumbotron"> -->
-		<%-- 			<form:form modelAttribute="searchForm" action="/lol/findBoard" method="post"> --%>
-		<!-- 				<div class="input-group"> -->
-		<%-- 					<form:select class="form-select" path="checkRadio"> --%>
-		<%-- 						<form:option value="groupName">제목</form:option> --%>
-		<%-- 						<form:option value="groupOwner">작성자</form:option> --%>
-		<%-- 						<form:option value="detail">세부 내용</form:option> --%>
-		<%-- 					</form:select> --%>
-		<%-- 					<form:input class="form-control" type="text" path="findDetail" placeholder="검색할 내용"/> --%>
-		<%-- 					<form:button class="btn btn-outline-primary" type="submit">검색하기</form:button> --%>
-		<!-- 				</div> -->
-		<%-- 			</form:form> --%>
-		<!-- 		</div> -->
+		
+		
+		<div class="jumbotron">
+			<form action="/board/findBoard" method="post">
+				<div class="input-group">
+					<span class="input-group-text">제목</span>
+					<input class="form-control" name="title" placeholder="검색할 내용"/>
+					<button class="btn btn-outline-success" type="submit">검색하기</button>
+					<input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}" /> 
+				</div>
+			</form>
+		</div>
+		
 	</div>
 
 </body>

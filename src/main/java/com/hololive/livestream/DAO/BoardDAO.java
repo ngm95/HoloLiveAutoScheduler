@@ -20,12 +20,20 @@ public class BoardDAO {
 		template.insert(MAPPER + ".create", boardDto);
 	}
 	
+	public BoardDTO readByBoardId(int boardId) {
+		return template.selectOne(MAPPER + ".readByBoardId", boardId);
+	}
+	
 	public int readBoardId(BoardDTO boardDto) {
 		return template.selectOne(MAPPER + ".readBoardId", boardDto);
 	}
 	
 	public List<BoardDTO> readLimitList(BoardMinMax bmm) {
 		return template.selectList(MAPPER + ".readLimitList", bmm);
+	}
+	
+	public List<BoardDTO> readAllLikeTitle(String title) {
+		return template.selectList(MAPPER + ".readAllLikeTitle", title);
 	}
 	
 	public int readMaxCount() {
@@ -36,8 +44,16 @@ public class BoardDAO {
 		template.update(MAPPER + ".increaseLike", boardId);
 	}
 	
+	public void decreaseLike(int boardId) {
+		template.update(MAPPER + ".decreaseLike", boardId);
+	}
+	
 	public void increaseDislike(int boardId) {
 		template.update(MAPPER + ".increaseDislike", boardId);
+	}
+	
+	public void decreaseDislike(int boardId) {
+		template.update(MAPPER + ".decreaseDislike", boardId);
 	}
 	
 	public void increaseViewed(int boardId) {

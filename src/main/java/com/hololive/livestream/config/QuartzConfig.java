@@ -20,6 +20,7 @@ import org.springframework.context.annotation.Configuration;
 import com.hololive.livestream.Quartz.CheckChannel;
 import com.hololive.livestream.Quartz.CheckLive;
 import com.hololive.livestream.Quartz.CheckUpcoming;
+import com.hololive.livestream.Quartz.CheckUpcomingAlive;
 import com.hololive.livestream.Quartz.ResetQuota;
 
 @Configuration
@@ -33,9 +34,17 @@ public class QuartzConfig {
 	@PostConstruct
 	public void start() {
 		try {
+			JobDetail resetQuota = buildJobDetail(ResetQuota.class, "resetQuota", "", new HashMap());
+			if (scheduler.checkExists(resetQuota.getKey()))
+				scheduler.deleteJob(resetQuota.getKey());
+			
 			JobDetail checkChannel = buildJobDetail(CheckChannel.class, "checkChannel", "", new HashMap());
 			if (scheduler.checkExists(checkChannel.getKey()))
 				scheduler.deleteJob(checkChannel.getKey());
+			
+			JobDetail checkUpcomingAlive = buildJobDetail(CheckUpcomingAlive.class, "checkUpcomingAlive", "", new HashMap());
+			if (scheduler.checkExists(checkUpcomingAlive.getKey()))
+				scheduler.deleteJob(checkUpcomingAlive.getKey());
 			
 			JobDetail checkUpcoming = buildJobDetail(CheckUpcoming.class, "checkUpcoming", "", new HashMap());
 			if (scheduler.checkExists(checkUpcoming.getKey()))
@@ -45,19 +54,18 @@ public class QuartzConfig {
 			if (scheduler.checkExists(checkLive.getKey()))
 				scheduler.deleteJob(checkLive.getKey());
 			
-			JobDetail resetQuota = buildJobDetail(ResetQuota.class, "resetQuota", "", new HashMap());
-			if (scheduler.checkExists(resetQuota.getKey()))
-				scheduler.deleteJob(resetQuota.getKey());
-			
-			
-			scheduler.scheduleJob(checkChannel, buildCronJobTrigger("10 0 * * * ?", 15));	// 모든 시각 0분 10초마다 실행
-			System.out.println("checkChannel");
-			scheduler.scheduleJob(checkUpcoming, buildCronJobTrigger("30 0/5 * * * ?", 10));	// 모든 시각 0분 30초에 시작해서 5분 간격으로 실행
-			System.out.println("checkUpcoming");
-			scheduler.scheduleJob(checkLive, buildCronJobTrigger("50 0/20 * * * ?", 5));	// 모든 시각 0분 50초에 시작해서 20분 간격으로 실행
-			System.out.println("checkLive");
-			scheduler.scheduleJob(resetQuota, buildCronJobTrigger("0 0 17 * * ?", 20));		// 매일 오후 17시 0분 0초에 실행
+				
+			scheduler.scheduleJob(resetQuota, buildCronJobTrigger("0 0 17 * * ?", 20));				// 매일 오후 17시 0분 0초에 실행
 			System.out.println("resetQuota");
+			scheduler.scheduleJob(checkUpcomingAlive, buildCronJobTrigger("10 0/20 * * * ?", 10));	// 모든 시각 0분 10초에 시작해서 20분 간격으로 실행
+			System.out.println("checkUpcomingAlive");
+			scheduler.scheduleJob(checkChannel, buildCronJobTrigger("20 0 * * * ?", 15));			// 모든 시각 0분 20초마다 실행
+			System.out.println("checkChannel");
+			scheduler.scheduleJob(checkUpcoming, buildCronJobTrigger("40 0/5 * * * ?", 5));			// 모든 시각 0분 40초에 시작해서 5분 간격으로 실행
+			System.out.println("checkUpcoming");
+			scheduler.scheduleJob(checkLive, buildCronJobTrigger("50 0/20 * * * ?", 0));			// 모든 시각 0분 50초에 시작해서 20분 간격으로 실행
+			System.out.println("checkLive");
+			
 		} catch (SchedulerException se) {
 			System.out.println("error");
 		}
