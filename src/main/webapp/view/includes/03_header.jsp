@@ -5,12 +5,12 @@
 
 <nav class="navbar navbar-light bg-light fixed-top" style="padding-top:5px; padding-bottom:5px;">
 	<div class="container-fluid">
-		<button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-		
+	
 		<div class="d-flex flex-row">
-			<div class="d-flex">
+			<button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="d-flex" style="margin-left : 20px">
 				<button class="btn btn-warning" type="button" id="refresh" style="margin-right:5px">
 					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
 					  <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z" />
@@ -19,6 +19,7 @@
 				</button>
 			</div>
 			<div id="videosList" class="d-flex"></div>
+			<div id="findVideo" class="d-flex"></div>
 		</div>
 		<a class="navbar-brand" href="/"><b>Holoduler</b></a>
 

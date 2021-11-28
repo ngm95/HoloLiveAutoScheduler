@@ -74,7 +74,7 @@
 		SELECT Live.*, Member.profilePath
 		FROM Live, Member
 		WHERE Live.memberName = Member.memberName
-		ORDER BY scheduledStartTime
+		ORDER BY actualStartTime
 	</select>
 	
 	<delete id="deleteLiveByVideoId">
@@ -100,7 +100,7 @@
 		SELECT Completed.*, Member.profilePath
 		FROM Completed, Member
 		WHERE Completed.memberName = Member.memberName
-		ORDER BY scheduledStartTime
+		ORDER BY actualStartTime
 	</select>
 	
 	<select id="readAllInCompletedIn1Days" resultType="com.hololive.livestream.DTO.VideoDTO">
@@ -108,7 +108,7 @@
 		SELECT Completed.*, Member.profilePath
 		FROM Completed, Member
 		WHERE Completed.memberName = Member.memberName AND DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 1 DAY), '%y.%m.%d %H:%i') <= scheduledStartTime
-		ORDER BY scheduledStartTime
+		ORDER BY actualStartTime
 	]]>
 	</select>
 	

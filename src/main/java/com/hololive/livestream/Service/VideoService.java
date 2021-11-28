@@ -32,6 +32,10 @@ public class VideoService {
 		return videoDao.readAllInUpcomingIn1Hour();
 	}
 	
+	public List<VideoDTO> readAllInCompleted() {
+		return videoDao.readAllInCompleted();
+	}
+	
 	public List<VideoDTO> readAllInCompletedIn1Days() {
 		return videoDao.readAllInCompletedIn1Days();
 	}

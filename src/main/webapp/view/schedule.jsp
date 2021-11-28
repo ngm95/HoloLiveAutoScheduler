@@ -11,6 +11,8 @@
 <body class="main-pages contents-wrap" style="margin-top: 80px">
 	<div class="container" style="height: 100%">
 		<%@ include file="/view/includes/03_header.jsp"%>
+		<jsp:include page="/view/includes/noticeModal.jsp"></jsp:include>
+		
 		<div class="jumbotron" style="background-color:#f1f1f1">
 			<p id="live" style="margin-bottom: 0px">
 			<h3>라이브 중인 방송</h3>
@@ -22,7 +24,7 @@
 							<c:forEach var="live" items="${liveList}" varStatus="status">
 								<div class="col" style="margin-bottom: 15px; padding-left: 8px; pdding-right: 8px">
 									<div class="d-flex">
-										<div class="card" style="cursor: pointer; border-width: thick; border-color: red" onclick="window.open('https://www.youtube.com/watch?v=${live.videoId}')">
+										<div class="card" style="cursor: pointer; border-width: thick; border-color: red; width:330px; height:230px" onclick="window.open('https://www.youtube.com/watch?v=${live.videoId}')">
 											<div class="d-flex flex-column">
 												<div class="d-flex justify-content-between">
 													<div class="d-flex flex-row">
@@ -32,11 +34,11 @@
 														<div class="d-flex" style="margin-left: 7px; margin-top: 8px">${live.memberName}</div>
 													</div>
 													<div class="d-flex" style="margin-top: 8px">
-														<b>${live.scheduledStartTime}</b>
+														<b>${live.actualStartTime}</b>
 													</div>
 												</div>
 												<div class="d-flex">
-													<img src="${live.thumbnailPath}">
+													<img src="${live.thumbnailPath}" style="width: 320px; height:180px;">
 												</div>
 											</div>
 										</div>
@@ -61,7 +63,7 @@
 							<c:forEach var="upcoming" items="${upcomingList}" varStatus="status">
 								<div class="col" style="margin-bottom: 15px; padding-left: 8px; pdding-right: 8px">
 									<div class="d-flex">
-										<div class="card" style="cursor: pointer; border-width: thick; border-color: green" onclick="window.open('https://www.youtube.com/watch?v=${upcoming.videoId}')">
+										<div class="card" style="cursor: pointer; border-width: thick; border-color: green; width:330px; height:230px" onclick="window.open('https://www.youtube.com/watch?v=${upcoming.videoId}')">
 											<div class="d-flex flex-column">
 												<div class="d-flex justify-content-between">
 													<div class="d-flex flex-row">
@@ -75,7 +77,7 @@
 													</div>
 												</div>
 												<div class="d-flex">
-													<img src="${upcoming.thumbnailPath}">
+													<img src="${upcoming.thumbnailPath}" style="width: 320px; height:180px;">
 												</div>
 											</div>
 										</div>
@@ -100,7 +102,7 @@
 							<c:forEach var="completed" items="${completedList}" varStatus="status">
 								<div class="col" style="margin-bottom: 15px; padding-left: 8px; pdding-right: 8px">
 									<div class="d-flex">
-										<div class="card" style="cursor: pointer; border-width: thick; border-color: gray" onclick="window.open('https://www.youtube.com/watch?v=${completed.videoId}')">
+										<div class="card" style="cursor: pointer; border-width: thick; border-color: gray; width:330px; height:230px" onclick="window.open('https://www.youtube.com/watch?v=${completed.videoId}')">
 											<div class="d-flex flex-column">
 												<div class="d-flex justify-content-between">
 													<div class="d-flex flex-row">
@@ -110,11 +112,11 @@
 														<div class="d-flex" style="margin-left: 7px; margin-top: 8px">${completed.memberName}</div>
 													</div>
 													<div class="d-flex" style="margin-top: 8px">
-														<b>${completed.scheduledStartTime}</b>
+														<b>${completed.actualStartTime}</b>
 													</div>
 												</div>
 												<div class="d-flex">
-													<img src="${completed.thumbnailPath}">
+													<img src="${completed.thumbnailPath}" style="width: 320px; height:180px;">
 												</div>
 											</div>
 										</div>

@@ -5,15 +5,17 @@
 <html>
 <head>
 <%@ include file="/view/includes/00_head.jsp"%>
-
+<script src="/js/findVideo.js"></script>
 <title>멀티뷰</title>
 </head>
-<body class="main-pages contents-wrap" style="padding:0px 0px 0px 0px; margin-left:12px; margin-right:0px; margin-top:80px; background-color:#f1f1f1">
+<body class="main-pages contents-wrap" style="padding:0px 0px 0px 0px; margin-left:0px; margin-right:0px; margin-top:80px; background-color:#f1f1f1">
 	<div class="container-iframe" style="height: 100%; padding:0px 0px 0px 0px; margin:0px 0px 0px 0px; background-color:#f1f1f1">
 		<%@ include file="/view/includes/03_header.jsp"%>
+		<jsp:include page="/view/includes/noticeModal.jsp"></jsp:include>
+		<jsp:include page="/view/includes/findVideoModal.jsp"></jsp:include>
 		
 		<div class="jumbotron-iframe" style="padding:0px 0px 0px 0px; margin:0px 0px 0px 0px; background-color:#f1f1f1">
-			<div id="iframeDiv" class="row row-cols-auto">
+			<div id="iframeDiv" class="iframe-container" style="padding:0px 0px 0px 0px; margin:0px 0px 0px 0px; width:100; height:100%; background-color:#f1f1f1">
 				
 			</div>
 		</div>

@@ -72,7 +72,7 @@ public class CheckChannel extends QuartzJobBean {
 				YouTube.Search.List search = youtube.search().list("id,snippet");
 				search.setFields("items(id/videoId, snippet/title, snippet/thumbnails/medium/url)");
 
-				search.setMaxResults(1L);
+				search.setMaxResults(5L);
 				search.setChannelId(member.getChannelId());
 				search.setEventType("upcoming");
 				search.setType("video");

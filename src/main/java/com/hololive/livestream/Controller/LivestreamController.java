@@ -3,10 +3,13 @@ package com.hololive.livestream.Controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -18,6 +21,24 @@ import com.hololive.livestream.Service.VideoService;
 @RequestMapping("/livestream")
 public class LivestreamController {
 	
+	@ModelAttribute("upcomingList")
+	public List<VideoDTO> upcomingList() {
+		return videoServ.readAllInUpcoming();
+	}
+	
+	@ModelAttribute("liveList")
+	public List<VideoDTO> liveList() {
+		return videoServ.readAllInLive();
+	}
+	
+	@ModelAttribute("completedList")
+	public List<VideoDTO> completedList(HttpServletRequest request) {
+		if (request.getRequestURI().equals("/livestream/schedule"))
+			return videoServ.readAllInCompletedIn1Days();
+		else
+			return videoServ.readAllInCompleted();
+	}
+	
 	@Autowired
 	VideoService videoServ;
 	
@@ -27,20 +48,11 @@ public class LivestreamController {
 	 */
 	@RequestMapping("/schedule")
 	public String schedule(Model model) {
-		List<VideoDTO> upcomingList = videoServ.readAllInUpcoming();				// 예약된 영상 정보
-		model.addAttribute("upcomingList", upcomingList);
-		
-		List<VideoDTO> liveList = videoServ.readAllInLive();						// 현재 방송 중인 영상 정보
-		model.addAttribute("liveList", liveList);
-		
-		List<VideoDTO> completedList = videoServ.readAllInCompletedIn1Days();		// 하루 이내에 종료한 영상 정보
-		model.addAttribute("completedList", completedList);
-		
 		return "/schedule";
 	}
 	
 	@RequestMapping("/multiview")
-	public String multiview() {
+	public String multiview(Model model) {
 		return "/multiview";
 	}
 	

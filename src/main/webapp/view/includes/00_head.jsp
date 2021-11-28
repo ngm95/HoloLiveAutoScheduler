@@ -10,6 +10,7 @@
 <link href="/bootstrap/css/bootstrap.css" rel="stylesheet">
 <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/css-element-queries/1.2.3/ResizeSensor.min.js"></script>
 
 <script src="/js/video.js"></script>
 <c:if test="${not empty notice}">
