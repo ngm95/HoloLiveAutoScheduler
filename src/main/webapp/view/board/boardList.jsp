@@ -61,7 +61,7 @@
 								<c:forEach var="board" items="${boardList}">
 									<tr>
 										<th scope="row">${board.boardId}</th>
-										<td><a href="/board/boardDetail/${page}/${board.boardId}">${board.title}</a></td>
+										<td><a href="/board/boardDetail/${bmm.now}/${board.boardId}">${board.title}</a></td>
 										<td>${board.love}</td>
 										<td>${board.dislike}</td>
 										<td>${board.viewed}</td>
