@@ -115,11 +115,11 @@ public class BoardController {
 
 		int startIdx = bmm.getMin() + (page - 1) * 10; // 현재 페이지에서 볼 수 있는 글의 시작, 끝 인덱스 계산
 		int endIdx = Math.min(bmm.getLimit(), startIdx + 10);
+		
+		bmm.setNow(page);
 
 		model.addAttribute("boardList", boardList.subList(startIdx, endIdx)); // 현재 페이지에서 볼 수 있는 글만 담아서 모델에 담음
 		model.addAttribute("bmm", bmm);
-		
-		model.addAttribute("page", page);
 
 		return "/board/boardList";
 	}
@@ -177,7 +177,7 @@ public class BoardController {
 	 * 리다이렉트한다.
 	 */
 	@PostMapping("/newPost")
-	public String newPost(@Valid @ModelAttribute("post") Post post, BindingResult br, HttpServletRequest request, RedirectAttributes rdAttributes) {
+	public String newPost(@Valid @ModelAttribute("post") Post post, BindingResult br, Model model, HttpServletRequest request, RedirectAttributes rdAttributes) {
 		BoardDTO boardDto = new BoardDTO();
 
 		if (post.getTitle().equals("")) {
@@ -217,7 +217,7 @@ public class BoardController {
 			boardServ.create(boardDto); // DB접근을 통해 게시글 생성
 
 			int boardId = boardServ.readBoardId(boardDto); // 생성한 게시글의 고유 번호를 받아 옴
-			return "redirect:/board/boardDetail/" + boardId; // 생성한 게시글로 리다이렉트
+			return "redirect:/board/boardDetail/" + bmm.getNow() + "/" + boardId; // 생성한 게시글로 리다이렉트
 		} catch (Exception e) {
 			rdAttributes.addFlashAttribute("notice", e);
 			return "redirect:" + request.getHeader("Referer");

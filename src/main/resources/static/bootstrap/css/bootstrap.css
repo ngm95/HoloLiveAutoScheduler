@@ -7311,6 +7311,22 @@ textarea.form-control-lg {
   order: 5 !important;
 }
 
+.order-6 {
+  order: 6 !important;
+}
+
+.order-7 {
+  order: 7 !important;
+}
+
+.order-8 {
+  order: 8 !important;
+}
+
+.order-9 {
+  order: 9 !important;
+}
+
 .order-last {
   order: 6 !important;
 }
