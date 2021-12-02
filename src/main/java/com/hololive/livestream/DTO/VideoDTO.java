@@ -16,12 +16,4 @@ public class VideoDTO {
 	String actualEndTime;
 	String thumbnailPath;
 	String profilePath;
-	
-	public VideoDTO(String memberName, String channelId, String videoId, String scheduledStartTime, String thumbnailPath) {
-		this.memberName = memberName;
-		this.channelId = channelId;
-		this.videoId = videoId;
-		this.scheduledStartTime = scheduledStartTime;
-		this.thumbnailPath = thumbnailPath;
-	}
 }

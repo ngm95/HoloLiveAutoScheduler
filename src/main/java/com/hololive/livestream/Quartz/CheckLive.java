@@ -1,6 +1,10 @@
 package com.hololive.livestream.Quartz;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -12,17 +16,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 import org.springframework.stereotype.Component;
 
-import com.google.api.client.http.HttpRequest;
-import com.google.api.client.http.HttpRequestInitializer;
-import com.google.api.client.http.HttpTransport;
-import com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.api.client.json.JsonFactory;
-import com.google.api.client.json.jackson2.JacksonFactory;
-import com.google.api.services.youtube.YouTube;
-import com.google.api.services.youtube.model.Video;
-import com.google.api.services.youtube.model.VideoLiveStreamingDetails;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hololive.livestream.DAO.VideoDAO;
 import com.hololive.livestream.DTO.APIDTO;
+import com.hololive.livestream.DTO.Video;
 import com.hololive.livestream.DTO.VideoDTO;
 
 /**
@@ -36,69 +34,52 @@ import com.hololive.livestream.DTO.VideoDTO;
 @Component
 public class CheckLive extends QuartzJobBean {
 
-	private static final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
-	private static final JsonFactory JSON_FACTORY = new JacksonFactory();
-	private static YouTube youtube = new YouTube.Builder(HTTP_TRANSPORT, JSON_FACTORY, new HttpRequestInitializer() {
-		public void initialize(HttpRequest request) throws IOException {
-		}
-	}).setApplicationName("HoloLiveAutoScheduler").build();
-
 	@Autowired
 	private VideoDAO videoDao;
 
+	ObjectMapper objectMapper = new ObjectMapper();
+
 	@Override
 	protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
-		StringBuilder log = new StringBuilder();
-
+		objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
+		StringBuilder log = new StringBuilder();
 		log.append(format.format(Calendar.getInstance().getTime()) + " : checkLive\n");
 
 		// DB Live 테이블에 있는 데이터를 리스트로 가져옴
 		List<VideoDTO> liveList = videoDao.readAllInLive();
 
-		// Live 동영상에 대해 Videos:list로 확인
-		for (VideoDTO live : liveList) {
-			log.append("\t member : " + live.getMemberName() + "\n");
+		for (int i = 0; i < liveList.size(); i++) {
+			VideoDTO live = liveList.get(i);
+			String videoURL = "https://holodex.net/api/v2/videos?channel_id=" + live.getChannelId() + "&id="
+					+ live.getVideoId();
+			APIDTO apiKey = videoDao.readMinQuotasAPIKey();
+			videoDao.increaseQuotas1(apiKey.getApiKey());
+
+			HttpRequest request = HttpRequest.newBuilder().uri(URI.create(videoURL))
+					.header("Content-Type", "application/json").header("X-APIKEY", apiKey.getApiKey())
+					.method("GET", HttpRequest.BodyPublishers.noBody()).build();
+			HttpResponse<String> response;
 			try {
-				YouTube.Videos.List videos = youtube.videos().list("liveStreamingDetails");
-				videos.setFields(
-						"items(id, liveStreamingDetails/scheduledStartTime, liveStreamingDetails/actualStartTime, liveStreamingDetails/actualEndTime)");
-				videos.setId(live.getVideoId());
-				videos.setMaxResults(1L);
-				
-				APIDTO api = videoDao.readMinQuotasAPIKey();
-				if (api.getQuota() > 9999)
-					throw new RuntimeException("\t\t하루 할당량이 초과되었습니다.");
-				videos.setKey(api.getApiKey());
-				videoDao.increaseQuotas1(api.getApiKey());
-				
-				List<Video> videoList = videos.execute().getItems();
-
-				if (videoList.isEmpty()) { // 반환 결과가 통째로 null이면 동영상이 삭제되었거나 아카이브가 올라가기 이전이므로 Live 테이블에서 삭제하고 Completed
-											// 테이블에 저장
-					log.append("\t\t" + live.getMemberName() + "의 라이브 동영상이 종료되었습니다.\n");
-					videoDao.deleteLiveByVideoId(live.getVideoId());
-					log.append("\t\t\t Live 테이블에서 삭제\n");
-					videoDao.createCompleted(live);
-					log.append("\t\t\t Completed 테이블에 삽입\n");
-				} else { // actualEndTime!=null이면 Live 테이블에서 삭제하고 Completed 테이블에 저장
-					VideoLiveStreamingDetails liveStreaming = videoList.get(0).getLiveStreamingDetails();
-					if (liveStreaming.getActualEndTime() != null) {
-						log.append("\t\t" + live.getMemberName() + "의 라이브 동영상이 종료되었습니다.\n");
-						videoDao.deleteLiveByVideoId(live.getVideoId());
-						log.append("\t\t\t Live 테이블에서 삭제\n");
-
-						format = new SimpleDateFormat("yy.MM.dd HH:mm");
-						live.setActualEndTime(format.format(liveStreaming.getActualEndTime().getValue()));
-						videoDao.createCompleted(live);
-						log.append("\t\t\t Completed 테이블에 삽입\n");
-					} else
-						log.append("\t\t" + live.getMemberName() + "의 라이브 동영상이 아직 라이브 상태입니다.\n");
+				response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+				Video video = objectMapper.readValue(response.body().substring(1, response.body().length()-1), Video.class);
+				if (!video.getStatus().equals("live")) { 	// 라이브 상태가 해제되면 live->completed로 옮긴다.
+					VideoDTO completed = new VideoDTO();
+					completed.setMemberName(videoDao.readMemberNameByChannelId(video.getChannel().getId()));
+					completed.setChannelId(video.getChannel().getId());
+					completed.setScheduledStartTime(video.getStart_scheduled());
+					completed.setActualStartTime(video.getStart_actual());
+					completed.setActualEndTime(video.getEnd_actual());
+					completed.setProfilePath(video.getChannel().getPhoto());
+					completed.setVideoId(video.getId());
+					completed.setThumbnailPath("https://i.ytimg.com/vi/" + video.getId() + "/mqdefault_live.jpg");
+					log.append("\t" + video.getChannel().getId() + " 종료 : Completed 테이블로 넣습니다.\n");
+					
+					videoDao.deleteLiveByVideoId(video.getId());
+					videoDao.createCompleted(completed);
 				}
-			} catch (IOException ioe) {
-				log.append("API 요청 시 오류가 발생했습니다.\n");
-			} catch(RuntimeException re) {
-				log.append(re.getMessage());
+			} catch (IOException | InterruptedException e) {
+				log.append("\t\t" + e.getMessage() + "\n");
 			}
 		}
 

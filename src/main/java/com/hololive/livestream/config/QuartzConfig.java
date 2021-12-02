@@ -21,7 +21,6 @@ import com.hololive.livestream.Quartz.CheckChannel;
 import com.hololive.livestream.Quartz.CheckLive;
 import com.hololive.livestream.Quartz.CheckUpcoming;
 import com.hololive.livestream.Quartz.CheckUpcomingAlive;
-import com.hololive.livestream.Quartz.ResetQuota;
 
 @Configuration
 public class QuartzConfig {
@@ -34,10 +33,6 @@ public class QuartzConfig {
 	@PostConstruct
 	public void start() {
 		try {
-			JobDetail resetQuota = buildJobDetail(ResetQuota.class, "resetQuota", "", new HashMap());
-			if (scheduler.checkExists(resetQuota.getKey()))
-				scheduler.deleteJob(resetQuota.getKey());
-			
 			JobDetail checkChannel = buildJobDetail(CheckChannel.class, "checkChannel", "", new HashMap());
 			if (scheduler.checkExists(checkChannel.getKey()))
 				scheduler.deleteJob(checkChannel.getKey());
@@ -55,16 +50,14 @@ public class QuartzConfig {
 				scheduler.deleteJob(checkLive.getKey());
 			
 				
-			scheduler.scheduleJob(resetQuota, buildCronJobTrigger("0 0 17 * * ?", 20));				// 매일 오후 17시 0분 0초에 실행
-			System.out.println("resetQuota");
-			scheduler.scheduleJob(checkUpcomingAlive, buildCronJobTrigger("10 0/20 * * * ?", 10));	// 모든 시각 0분 10초에 시작해서 20분 간격으로 실행
-			System.out.println("checkUpcomingAlive");
-			scheduler.scheduleJob(checkChannel, buildCronJobTrigger("20 0 * * * ?", 15));			// 모든 시각 0분 20초마다 실행
+//			scheduler.scheduleJob(checkUpcomingAlive, buildCronJobTrigger("10 10 * * * ?", 10));	// 모든 시각 0분 10초에 시작해서 20분 간격으로 실행
+//			System.out.println("checkUpcomingAlive");
+			scheduler.scheduleJob(checkChannel, buildCronJobTrigger("25 0/20 * * * ?", 15));			// 모든 시각 0분 20초마다 실행
 			System.out.println("checkChannel");
-			scheduler.scheduleJob(checkUpcoming, buildCronJobTrigger("40 0/5 * * * ?", 5));			// 모든 시각 0분 40초에 시작해서 5분 간격으로 실행
-			System.out.println("checkUpcoming");
-			scheduler.scheduleJob(checkLive, buildCronJobTrigger("50 0/20 * * * ?", 0));			// 모든 시각 0분 50초에 시작해서 20분 간격으로 실행
-			System.out.println("checkLive");
+//			scheduler.scheduleJob(checkUpcoming, buildCronJobTrigger("40 34 * * * ?", 5));			// 모든 시각 0분 40초에 시작해서 5분 간격으로 실행
+//			System.out.println("checkUpcoming");
+//			scheduler.scheduleJob(checkLive, buildCronJobTrigger("50 10 * * * ?", 0));			// 모든 시각 0분 50초에 시작해서 20분 간격으로 실행
+//			System.out.println("checkLive");
 			
 		} catch (SchedulerException se) {
 			System.out.println("error");

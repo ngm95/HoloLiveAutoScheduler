@@ -40,6 +40,14 @@ public class VideoService {
 		return videoDao.readAllInCompletedIn1Days();
 	}
 	
+	public List<VideoDTO> readAllInCompletedIn3Days() {
+		return videoDao.readAllInCompletedIn3Days();
+	}
+	
+	public List<VideoDTO> readAllInCompletedBetweenSomeday(String start, String end) {
+		return videoDao.readAllInCompletedBetweenSomeday(start, end);
+	}
+	
 	public APIDTO readMinQuotasAPIKey() {
 		return videoDao.readMinQuotasAPIKey();
 	}

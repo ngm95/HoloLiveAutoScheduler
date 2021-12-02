@@ -9,7 +9,10 @@
 <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 <link href="/bootstrap/css/bootstrap.css" rel="stylesheet">
 <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<link href="http://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css" type="text/css" rel="stylesheet">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="http://code.jquery.com/ui/1.13.0/jquery-ui.min.js" type="text/javascript">
+</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/css-element-queries/1.2.3/ResizeSensor.min.js"></script>
 
 <script src="/js/video.js"></script>

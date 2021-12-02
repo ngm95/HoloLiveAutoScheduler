@@ -1,7 +1,4 @@
 $(document).ready(function() {
-	var token = $("meta[name='_csrf_token']").attr("content");
-	var header = $("meta[name='_csrf_header']").attr("content");
-	
 	$('#iframeDiv').height((window.innerHeight - 70));
 	$('#iframeDiv').width((window.innerWidth));
 	
@@ -42,9 +39,6 @@ $(document).ready(function() {
 			method: "get",
 			dataType: "json",
 			contentType: "application/json;charset=UTF-8",
-			beforeSend: function(xhr) {
-				xhr.setRequestHeader(header, token);
-			},
 			success: function(videos) {
 				for (var i in videos) {
 					var videoId = videos[i].videoId;

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -79,5 +80,33 @@ public class LivestreamController {
 		
 		Gson gson = new Gson();
 		return gson.toJson(videos);
+	}
+	
+	@GetMapping("/getLiveList")
+	@ResponseBody
+	public String getLiveList() {
+		Gson gson = new Gson();
+		return gson.toJson(videoServ.readAllInLive());
+	}
+	
+	@GetMapping("/getUpcomingList")
+	@ResponseBody
+	public String getUpcomingList() {
+		Gson gson = new Gson();
+		return gson.toJson(videoServ.readAllInUpcoming());
+	}
+	
+	@GetMapping("/getCompletedListIn3Day")
+	@ResponseBody
+	public String getCompletedListIn3Day() {
+		Gson gson = new Gson();
+		return gson.toJson(videoServ.readAllInCompletedIn3Days());
+	}
+	
+	@GetMapping("/getCompletedListBetweenSomeday/{start}/{end}")
+	@ResponseBody
+	public String getCompletedListBetweenSomeday(@PathVariable("start") String start, @PathVariable("end") String end) {
+		Gson gson = new Gson();
+		return gson.toJson(videoServ.readAllInCompletedBetweenSomeday(start, end));
 	}
 }
