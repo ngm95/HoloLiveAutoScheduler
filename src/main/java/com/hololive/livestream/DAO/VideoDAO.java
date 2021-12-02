@@ -39,10 +39,16 @@ public class VideoDAO {
 	}
 	
 	public void createUpcoming(VideoDTO videoDto) {
-		if (readUpcomingByVideoId(videoDto.getVideoId()) == null)
+		VideoDTO upcoming = readUpcomingByVideoId(videoDto.getVideoId());
+		if (upcoming == null)
 			template.insert(MAPPER + ".createUpcoming", videoDto);
-		else
+		else {
 			System.out.println("\t\t 이미 존재합니다.");
+			if (!upcoming.getScheduledStartTime().equals(videoDto.getScheduledStartTime())) {
+				updateScheduledStartTime(videoDto);
+				System.out.println("\t\t 시작 시간이 변경되었습니다. (" + upcoming.getScheduledStartTime() + "->" + videoDto.getScheduledStartTime() + ")");
+			}
+		}
 	}
 	
 	public VideoDTO readUpcomingByVideoId(String videoId) {
