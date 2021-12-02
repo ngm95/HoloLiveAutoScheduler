@@ -16,6 +16,7 @@
 		<div class="jumbotron" style="background-color: #f1f1f1">
 			<h1>Holoduler</h1>
 			<div class="jumbotron-board">
+				
 				<div id="indexNotice">
 					<p style="margin-bottom: 0px">
 						주기적으로 홀로라이브 JP/EN 멤버들의 유튜브 활동을 확인해 스케줄표를 구성하는 사이트입니다.<br /> 실시간 방송 상태와 다소 시간 차이가 발생할 수 있습니다.<br /> <br />
@@ -25,6 +26,7 @@
 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;영상에서 오류가 발생하면 영상 제거 후 다시 추가해주세요.<br /> &nbsp;&nbsp;&nbsp;&nbsp;- <a style="font-size: 1.5em">게시판</a> : 유튜브에서 아카이브 영상이나 클립/키리누키 영상을 공유할 수 있습니다.<br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;홀로라이브 혹은 버츄얼 유튜버 관련 영상만 올려 주시길 바랍니다.<br />
 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;적절하지 않은 영상은 삭제될 수 있습니다.<br />
 					</p>
+					<h1 style="color:pink">Thanks to and Powered By <a href="https://holodex.stoplight.io/">Holodex.net API</a></h1>
 				</div>
 			</div>
 		</div>

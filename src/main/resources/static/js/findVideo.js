@@ -157,8 +157,9 @@ $(document).ready(function() {
 	$('#refresh').click(function() {
 		showLive();
 		showUpcoming();
-		showCompleted();
-		$('#start').datepicker('setDate', new Date(today.setDate(today.getDate()-3)));
-		$('#end').datepicker('setDate', new Date());
+		
+		var start = $('#start').val() + " 00:00";
+		var end = $('#end').val() + " 23:59";
+		showCompletedAfterSomeday(start, end);
 	});
 });
