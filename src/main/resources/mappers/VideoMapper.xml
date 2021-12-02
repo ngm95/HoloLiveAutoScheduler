@@ -4,12 +4,23 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 	
 <mapper namespace="VideoMapper">
-	<update id="setAllRefreshedFalse">
+	<update id="setUpcomingAllRefreshedFalse">
+		UPDATE Upcoming
+		SET refreshed = 'false'
+	</update>
+	
+	<update id="setLiveAllRefreshedFalse">
 		UPDATE Live
 		SET refreshed = 'false'
 	</update>
 	
-	<update id="setRefreshedTrueByVideoId">
+	<update id="setUpcomingRefreshedTrueByVideoId">
+		UPDATE Upcoming
+		SET refreshed = 'true'
+		WHERE videoId = #{videoId}
+	</update>
+	
+	<update id="setLiveRefreshedTrueByVideoId">
 		UPDATE Live
 		SET refreshed = 'true'
 		WHERE videoId = #{videoId}
@@ -53,6 +64,13 @@
 		WHERE Upcoming.memberName = Member.memberName AND DATE_FORMAT(DATE_ADD(NOW(), INTERVAL 1 HOUR), '%y.%m.%d %H:%i') >= scheduledStartTime
 		ORDER BY scheduledStartTime
 	]]>
+	</select>
+	
+	<select id="readAllInUpcomingNotRefreshed" resultType="com.hololive.livestream.DTO.VideoDTO">
+		SELECT Upcoming.memberName, Upcoming.channelId, Upcoming.videoId, Upcoming.scheduledStartTime, Upcoming.thumbnailPath, Member.profilePath
+		FROM Upcoming, Member
+		WHERE Upcoming.memberName = Member.memberName AND Upcoming.refreshed = 'false'
+		ORDER BY scheduledStartTime
 	</select>
 	
 	<select id="readAllInUpcoming" resultType="com.hololive.livestream.DTO.VideoDTO">

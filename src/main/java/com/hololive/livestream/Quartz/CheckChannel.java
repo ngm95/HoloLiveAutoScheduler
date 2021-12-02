@@ -60,7 +60,8 @@ public class CheckChannel extends QuartzJobBean {
 		try {
 			HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
 			List<Video> videos = objectMapper.readValue(response.body(), objectMapper.getTypeFactory().constructCollectionType(List.class, Video.class));
-			videoDao.setAllRefreshedFalse();
+			videoDao.setUpcomingAllRefreshedFalse();
+			videoDao.setLiveAllRefreshedFalse();
 			for (int j = 0; j < videos.size(); j++) {
 				Video video = videos.get(j);
 				if (video.getStatus().equals("upcoming")) {								// 예약 상태라면 Upcoming에 삽입
@@ -99,6 +100,14 @@ public class CheckChannel extends QuartzJobBean {
 					videoDao.deleteUpcomingByVideoId(video.getId());
 					videoDao.createLive(live);
 				}
+			}
+			
+			List<VideoDTO> completeUpcoming = videoDao.readAllInUpcomingNotRefreshed();
+			for (int j = 0; j < completeUpcoming.size(); j++) {
+				VideoDTO completed = completeUpcoming.get(j);
+				System.out.println("\t" + completed.getVideoId() + " : Upcoming -> Completed");
+				videoDao.deleteUpcomingByVideoId(completed.getVideoId());
+				videoDao.createCompleted(completed);
 			}
 			
 			List<VideoDTO> completeLive = videoDao.readAllInLiveNotRefreshed();

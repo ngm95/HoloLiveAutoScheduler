@@ -52,7 +52,7 @@ public class QuartzConfig {
 				
 //			scheduler.scheduleJob(checkUpcomingAlive, buildCronJobTrigger("10 10 * * * ?", 10));	// 모든 시각 0분 10초에 시작해서 20분 간격으로 실행
 //			System.out.println("checkUpcomingAlive");
-			scheduler.scheduleJob(checkChannel, buildCronJobTrigger("0 0/10 * * * ?", 15));			// 모든 시각 0분 20초마다 실행
+			scheduler.scheduleJob(checkChannel, buildCronJobTrigger("0 1/10 * * * ?", 15));			// 모든 시각 0분 20초마다 실행
 			System.out.println("checkChannel");
 //			scheduler.scheduleJob(checkUpcoming, buildCronJobTrigger("40 34 * * * ?", 5));			// 모든 시각 0분 40초에 시작해서 5분 간격으로 실행
 //			System.out.println("checkUpcoming");

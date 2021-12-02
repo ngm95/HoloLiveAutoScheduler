@@ -18,12 +18,20 @@ public class VideoDAO {
 	@Autowired
 	SqlSessionTemplate template;
 	
-	public void setAllRefreshedFalse() {
-		template.update(MAPPER + ".setAllRefreshedFalse");
+	public void setUpcomingAllRefreshedFalse() {
+		template.update(MAPPER + ".setUpcomingAllRefreshedFalse");
 	}
 	
-	public void setRefreshedTrueByVideoId(String videoId) {
-		template.update(MAPPER + ".setRefreshedTrueByVideoId", videoId);
+	public void setUpcomingRefreshedTrueByVideoId(String videoId) {
+		template.update(MAPPER + ".setUpcomingRefreshedTrueByVideoId", videoId);
+	}
+	
+	public void setLiveAllRefreshedFalse() {
+		template.update(MAPPER + ".setLiveAllRefreshedFalse");
+	}
+	
+	public void setLiveRefreshedTrueByVideoId(String videoId) {
+		template.update(MAPPER + ".setLiveRefreshedTrueByVideoId", videoId);
 	}
 	
 	public List<MemberDTO> readAllMember() {
@@ -44,6 +52,7 @@ public class VideoDAO {
 			template.insert(MAPPER + ".createUpcoming", videoDto);
 		else {
 			System.out.println("\t\t 이미 존재합니다.");
+			setUpcomingRefreshedTrueByVideoId(upcoming.getVideoId());
 			if (!upcoming.getScheduledStartTime().equals(videoDto.getScheduledStartTime())) {
 				updateScheduledStartTime(videoDto);
 				System.out.println("\t\t 시작 시간이 변경되었습니다. (" + upcoming.getScheduledStartTime() + "->" + videoDto.getScheduledStartTime() + ")");
@@ -63,6 +72,10 @@ public class VideoDAO {
 		return template.selectList(MAPPER + ".readAllInUpcoming");
 	}
 	
+	public List<VideoDTO> readAllInUpcomingNotRefreshed() {
+		return template.selectList(MAPPER + ".readAllInUpcomingNotRefreshed");
+	}
+	
 	public void updateScheduledStartTime(VideoDTO videoDto) {
 		template.update(MAPPER + ".updateScheduledStartTime", videoDto);
 	}
@@ -76,7 +89,7 @@ public class VideoDAO {
 			template.insert(MAPPER + ".createLive", videoDto);
 		else {
 			System.out.println("\t\t 이미 존재합니다.");
-			setRefreshedTrueByVideoId(videoDto.getVideoId());
+			setLiveRefreshedTrueByVideoId(videoDto.getVideoId());
 		}
 	}
 	
