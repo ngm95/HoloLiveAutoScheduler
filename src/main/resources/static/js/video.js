@@ -127,9 +127,9 @@ $(document).ready(function() {
 		keyboard: false
 	});
 	
-	function showNoticeModal() {
+	function showNoticeModal(message) {
 		$('#modalBody').empty();
-		$('#modalBody').append('이미 9개의 방송이 켜져 있습니다.');
+		$('#modalBody').append(message);
 		myModal.show();
 	}
 
@@ -144,7 +144,7 @@ $(document).ready(function() {
 
 		if (unique == true) {
 			if (videos >= 9) {
-				showNoticeModal();
+				showNoticeModal("이미 9개 방송이 켜져 있습니다.");
 				return;
 			}
 			
@@ -158,7 +158,7 @@ $(document).ready(function() {
 			videos += 1;
 			resize();
 		} else {
-			showNoticeModal();
+			showNoticeModal("이미 켜져 있는 방송입니다.");
 		}
 	});
 
@@ -184,10 +184,17 @@ $(document).ready(function() {
 		}
 		else {
 			var videoId = $(this).attr('id');
+			var profile = $('#videosList').children('#'+videoId)
+			if (profile.length > 0) {
+				selectedProfile.push(profile);
+				profile.remove();
+			}
+			
 			$('#iframeDiv').append("<div id=\"video\"><div class=\"d-flex flex-column\" style=\"border:1px gray solid; border-radius:5px;\"><div clas=\"d-flex\"><iframe id=\"" + videoId + "\" width=\"" + $('#iframeDiv').width()/24 + "\" height=\"" + $('#iframeDiv').height()/24 + "\" src=\"https://www.youtube.com/embed/" + videoId + "\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe></div><div class=\"d-flex justify-content-end\"><div class=\"d-flex\" style=\"font-size:1.0em\">↑ 영상 제거 : &nbsp;</div><div class=\"d-flex\"><button class=\"btn btn-sm btn-outline-secondary\" id=\""+ videoId +"\" name=\"detach\" type=\"button\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-x-circle-fill\" viewBox=\"0 0 16 16\"><path d=\"M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z\"/></svg></button></div><div></div></div>");
 			
 			videos += 1;
 			resize();
+			refresh();
 		}
 	});
 	
