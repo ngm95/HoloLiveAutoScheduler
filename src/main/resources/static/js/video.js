@@ -1,5 +1,5 @@
 $(document).ready(function() {
-	$('#iframeDiv').height((window.innerHeight - 70));
+	$('#iframeDiv').height((window.innerHeight - 60));
 	$('#iframeDiv').width((window.innerWidth));
 	
 	var sizeArr = [[[24, 24]], [[12, 24], [12, 24]], [[12, 24], [12, 12], [12, 12]], [[12, 12], [12, 12], [12, 12], [12, 12]], [[12, 15], [12, 15], [8, 9], [8, 9], [8, 9]], [[8, 12], [8, 12], [8, 12], [8, 12], [8, 12], [8, 12]],
@@ -53,10 +53,10 @@ $(document).ready(function() {
 						
 						if (videos[i].actualStartTime != null) {
 							var html = '<div class=\'d-flex flex-column\'><div class=\'d-flex flex-row\'><img src=\'' + videos[i].thumbnailPath + '\' width=\'100%\' height=\'100%\'></div><div class=\'d-flex flex-row\'>시작 시각 : ' + videos[i].actualStartTime + '</div></div>';
-							$('#videosList').append("<div name=\"tooltip\" id=\"" + videos[i].videoId + "\" data-bs-toggle=\"tooltip\" data-bs-html=\"true\" title=\"" + html + "\" style=\"order:"+i+"; padding-left:2px; padding-right:2px\"><img src=\"" + videos[i].profilePath + "\" style=\"border-radius:50%; width:55px; border:2px red solid\"></div>");
+							$('#videosList').append("<div name=\"tooltip\" id=\"" + videos[i].videoId + "\" data-bs-toggle=\"tooltip\" data-bs-html=\"true\" title=\"" + html + "\" style=\"order:"+i+"; padding-left:2px; padding-right:2px\"><img src=\"" + videos[i].profilePath + "\" style=\"border-radius:50%; width:45px; border:2px red solid\"></div>");
 						} else {
 							var html = '<div class=\'d-flex flex-column\'><div class=\'d-flex flex-row\'><img src=\'' + videos[i].thumbnailPath + '\' width=\'100%\' height=\'100%\'></div><div class=\'d-flex flex-row\'>예정 시각 : ' + videos[i].scheduledStartTime + '</div></div>';
-							$('#videosList').append("<div name=\"tooltip\" id=\"" + videos[i].videoId + "\" data-bs-toggle=\"tooltip\" data-bs-html=\"true\" title=\"" + html + "\" style=\"order:"+i+"; padding-left:2px; padding-right:2px\"><img src=\"" + videos[i].profilePath + "\" style=\"border-radius:50%; width:55px; border:2px green solid\"></div>");
+							$('#videosList').append("<div name=\"tooltip\" id=\"" + videos[i].videoId + "\" data-bs-toggle=\"tooltip\" data-bs-html=\"true\" title=\"" + html + "\" style=\"order:"+i+"; padding-left:2px; padding-right:2px\"><img src=\"" + videos[i].profilePath + "\" style=\"border-radius:50%; width:45px; border:2px green solid\"></div>");
 						}
 					}
 				}

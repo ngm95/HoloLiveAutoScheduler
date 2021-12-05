@@ -8,7 +8,7 @@
 <script src="/js/findVideo.js"></script>
 <title>멀티뷰</title>
 </head>
-<body class="main-pages contents-wrap" style="padding:0px 0px 0px 0px; margin-left:0px; margin-right:0px; margin-top:70px; background-color:#f1f1f1">
+<body class="main-pages contents-wrap" style="padding:0px 0px 0px 0px; margin-left:0px; margin-right:0px; margin-top:60px; background-color:#f1f1f1">
 	<div class="container-iframe" style="height: 100%; padding:0px 0px 0px 0px; margin:0px 0px 0px 0px; background-color:#f1f1f1">
 		<%@ include file="/view/includes/03_header.jsp"%>
 		<jsp:include page="/view/includes/noticeModal.jsp"></jsp:include>

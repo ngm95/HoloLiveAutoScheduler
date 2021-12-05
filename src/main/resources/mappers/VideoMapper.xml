@@ -4,6 +4,7 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 	
 <mapper namespace="VideoMapper">
+
 	<update id="setUpcomingAllRefreshedFalse">
 		UPDATE Upcoming
 		SET refreshed = 'false'
@@ -52,14 +53,23 @@
 	</insert>
 	
 	<select id="readUpcomingByVideoId" resultType="com.hololive.livestream.DTO.VideoDTO">
-		SELECT memberName, channelId, videoId, scheduledStartTime, thumbnailPath
+		SELECT memberName, channelId, videoId, scheduledStartTime, thumbnailPath, CONCAT("window.open('https://youtube.com/watch?v=)", videoId, "')") as youtubePath
 		FROM Upcoming
 		WHERE videoId = #{videoId}
 	</select>
 	
 	<select id="readAllInUpcomingIn1Hour" resultType="com.hololive.livestream.DTO.VideoDTO">
 	<![CDATA[
-		SELECT Upcoming.memberName, Upcoming.channelId, Upcoming.videoId, Upcoming.scheduledStartTime, Upcoming.thumbnailPath, Member.profilePath
+		SELECT Upcoming.memberName, Upcoming.channelId, Upcoming.videoId, Upcoming.scheduledStartTime, Upcoming.thumbnailPath, Member.profilePath, CONCAT("window.open('https://youtube.com/watch?v=", videoId, "')") as youtubePath
+		FROM Upcoming, Member
+		WHERE Upcoming.memberName = Member.memberName AND DATE_FORMAT(DATE_ADD(NOW(), INTERVAL 1 HOUR), '%y.%m.%d %H:%i') >= scheduledStartTime
+		ORDER BY scheduledStartTime
+	]]>
+	</select>
+	
+	<select id="readAllInUpcomingIn1HourWithTooltip" resultType="com.hololive.livestream.DTO.VideoDTO">
+	<![CDATA[
+		SELECT Upcoming.memberName, Upcoming.channelId, Upcoming.videoId, Upcoming.scheduledStartTime, Upcoming.thumbnailPath, Member.profilePath, CONCAT("window.open('https://youtube.com/watch?v=", videoId, "')") as youtubePath, CONCAT("<div class='d-flex flex-column'><div class='d-flex flex-row'><img src='", thumbnailPath, "' width='100%' height='100%'></div><div class='d-flex flex-row'>시작 시각 : ", scheduledStartTime, "</div>") as tooltip
 		FROM Upcoming, Member
 		WHERE Upcoming.memberName = Member.memberName AND DATE_FORMAT(DATE_ADD(NOW(), INTERVAL 1 HOUR), '%y.%m.%d %H:%i') >= scheduledStartTime
 		ORDER BY scheduledStartTime
@@ -67,14 +77,14 @@
 	</select>
 	
 	<select id="readAllInUpcomingNotRefreshed" resultType="com.hololive.livestream.DTO.VideoDTO">
-		SELECT Upcoming.memberName, Upcoming.channelId, Upcoming.videoId, Upcoming.scheduledStartTime, Upcoming.thumbnailPath, Member.profilePath
+		SELECT Upcoming.memberName, Upcoming.channelId, Upcoming.videoId, Upcoming.scheduledStartTime, Upcoming.thumbnailPath, Member.profilePath, CONCAT("window.open('https://youtube.com/watch?v=", videoId, "')") as youtubePath
 		FROM Upcoming, Member
 		WHERE Upcoming.memberName = Member.memberName AND Upcoming.refreshed = 'false'
 		ORDER BY scheduledStartTime
 	</select>
 	
 	<select id="readAllInUpcoming" resultType="com.hololive.livestream.DTO.VideoDTO">
-		SELECT Upcoming.memberName, Upcoming.channelId, Upcoming.videoId, Upcoming.scheduledStartTime, Upcoming.thumbnailPath, Member.profilePath
+		SELECT Upcoming.memberName, Upcoming.channelId, Upcoming.videoId, Upcoming.scheduledStartTime, Upcoming.thumbnailPath, Member.profilePath, CONCAT("window.open('https://youtube.com/watch?v=", videoId, "')") as youtubePath
 		FROM Upcoming, Member
 		WHERE Upcoming.memberName = Member.memberName
 		ORDER BY scheduledStartTime
@@ -100,20 +110,29 @@
 	</insert>
 	
 	<select id="readLiveByVideoId" resultType="com.hololive.livestream.DTO.VideoDTO">
-		SELECT memberName, channelId, videoId, scheduledStartTime, actualStartTime, thumbnailPath
+		SELECT memberName, channelId, videoId, scheduledStartTime, actualStartTime, thumbnailPath, CONCAT("window.open('https://youtube.com/watch?v=)", videoId, "')") as youtubePath
 		FROM Live
 		WHERE videoId = #{videoId}
 	</select>
 	
 	<select id="readAllInLive"  resultType="com.hololive.livestream.DTO.VideoDTO">
-		SELECT Live.memberName, Live.channelId, Live.videoId, Live.scheduledStartTime, Live.actualStartTime, Live.thumbnailPath, Member.profilePath
+		SELECT Live.memberName, Live.channelId, Live.videoId, Live.scheduledStartTime, Live.actualStartTime, Live.thumbnailPath, Member.profilePath, CONCAT("window.open('https://youtube.com/watch?v=", videoId, "')") as youtubePath
 		FROM Live, Member
 		WHERE Live.memberName = Member.memberName
 		ORDER BY actualStartTime
 	</select>
 	
+	<select id="readAllInLiveWithTooltip"  resultType="com.hololive.livestream.DTO.VideoDTO">
+	<![CDATA[
+		SELECT Live.memberName, Live.channelId, Live.videoId, Live.scheduledStartTime, Live.actualStartTime, Live.thumbnailPath, Member.profilePath, CONCAT("window.open('https://youtube.com/watch?v=", videoId, "')") as youtubePath, CONCAT("<div class='d-flex flex-column'><div class='d-flex flex-row'><img src='", thumbnailPath, "' width='100%' height='100%'></div><div class='d-flex flex-row'>시작 시각 : ", actualStartTime, "</div>") as tooltip
+		FROM Live, Member
+		WHERE Live.memberName = Member.memberName
+		ORDER BY actualStartTime
+	]]>
+	</select>
+	
 	<select id="readAllInLiveNotRefreshed" resultType="com.hololive.livestream.DTO.VideoDTO">
-		SELECT Live.memberName, Live.channelId, Live.videoId, Live.scheduledStartTime, Live.actualStartTime, Live.thumbnailPath, Member.profilePath
+		SELECT Live.memberName, Live.channelId, Live.videoId, Live.scheduledStartTime, Live.actualStartTime, Live.thumbnailPath, Member.profilePath, CONCAT("window.open('https://youtube.com/watch?v=", videoId, "')") as youtubePath
 		FROM Live, Member
 		WHERE Live.memberName = Member.memberName AND Live.refreshed = 'false'
 		ORDER BY actualStartTime
@@ -133,13 +152,13 @@
 	</insert>
 	
 	<select id="readCompletedByVideoId" resultType="com.hololive.livestream.DTO.VideoDTO">
-		SELECT memberName, channelId, videoId, scheduledStartTime, actualStartTime, thumbnailPath, actualEndTime
+		SELECT memberName, channelId, videoId, scheduledStartTime, actualStartTime, thumbnailPath, actualEndTime, CONCAT("window.open('https://youtube.com/watch?v=", videoId, "')") as youtubePath
 		FROM Completed
 		WHERE videoId = #{videoId}
 	</select>
 	
 	<select id="readAllInCompleted" resultType="com.hololive.livestream.DTO.VideoDTO">
-		SELECT Completed.memberName, Completed.channelId, Completed.videoId, Completed.scheduledStartTime, Completed.actualStartTime, Completed.thumbnailPath, Completed.actualEndTime, Member.profilePath
+		SELECT Completed.memberName, Completed.channelId, Completed.videoId, Completed.scheduledStartTime, Completed.actualStartTime, Completed.thumbnailPath, Completed.actualEndTime, Member.profilePath, CONCAT("window.open('https://youtube.com/watch?v=", videoId, "')") as youtubePath
 		FROM Completed, Member
 		WHERE Completed.memberName = Member.memberName
 		ORDER BY actualStartTime
@@ -147,7 +166,7 @@
 	
 	<select id="readAllInCompletedIn1Days" resultType="com.hololive.livestream.DTO.VideoDTO">
 	<![CDATA[
-		SELECT Completed.memberName, Completed.channelId, Completed.videoId, Completed.scheduledStartTime, Completed.actualStartTime, Completed.thumbnailPath, Completed.actualEndTime, Member.profilePath
+		SELECT Completed.memberName, Completed.channelId, Completed.videoId, Completed.scheduledStartTime, Completed.actualStartTime, Completed.thumbnailPath, Completed.actualEndTime, Member.profilePath, CONCAT("window.open('https://youtube.com/watch?v=", videoId, "')") as youtubePath
 		FROM Completed, Member
 		WHERE Completed.memberName = Member.memberName AND DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 1 DAY), '%y.%m.%d %H:%i') <= scheduledStartTime
 		ORDER BY actualStartTime
@@ -156,7 +175,7 @@
 	
 	<select id="readAllInCompletedIn3Days" resultType="com.hololive.livestream.DTO.VideoDTO">
 	<![CDATA[
-		SELECT Completed.memberName, Completed.channelId, Completed.videoId, Completed.scheduledStartTime, Completed.actualStartTime, Completed.thumbnailPath, Completed.actualEndTime, Member.profilePath
+		SELECT Completed.memberName, Completed.channelId, Completed.videoId, Completed.scheduledStartTime, Completed.actualStartTime, Completed.thumbnailPath, Completed.actualEndTime, Member.profilePath, CONCAT("window.open('https://youtube.com/watch?v=", videoId, "')") as youtubePath
 		FROM Completed, Member
 		WHERE Completed.memberName = Member.memberName AND DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 3 DAY), '%y.%m.%d %H:%i') <= scheduledStartTime
 		ORDER BY actualStartTime
@@ -165,7 +184,7 @@
 	
 	<select id="readAllInCompletedBetweenSomeday" resultType="com.hololive.livestream.DTO.VideoDTO">
 	<![CDATA[
-		SELECT Completed.memberName, Completed.channelId, Completed.videoId, Completed.scheduledStartTime, Completed.actualStartTime, Completed.thumbnailPath, Completed.actualEndTime, Member.profilePath
+		SELECT Completed.memberName, Completed.channelId, Completed.videoId, Completed.scheduledStartTime, Completed.actualStartTime, Completed.thumbnailPath, Completed.actualEndTime, Member.profilePath, CONCAT("window.open('https://youtube.com/watch?v=", videoId, "')") as youtubePath
 		FROM Completed, Member
 		WHERE Completed.memberName = Member.memberName AND #{start} <= scheduledStartTime AND scheduledStartTime <= #{end}
 		ORDER BY actualStartTime

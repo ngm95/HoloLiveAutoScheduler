@@ -68,6 +68,10 @@ public class VideoDAO {
 		return template.selectList(MAPPER + ".readAllInUpcomingIn1Hour");
 	}
 	
+	public List<VideoDTO> readAllInUpcomingIn1HourWithTooltip() {
+		return template.selectList(MAPPER + ".readAllInUpcomingIn1HourWithTooltip");
+	}
+	
 	public List<VideoDTO> readAllInUpcoming() {
 		return template.selectList(MAPPER + ".readAllInUpcoming");
 	}
@@ -99,6 +103,10 @@ public class VideoDAO {
 	
 	public List<VideoDTO> readAllInLive() {
 		return template.selectList(MAPPER + ".readAllInLive");
+	}
+	
+	public List<VideoDTO> readAllInLiveWithTooltip() {
+		return template.selectList(MAPPER + ".readAllInLiveWithTooltip");
 	}
 	
 	public List<VideoDTO> readAllInLiveNotRefreshed() {

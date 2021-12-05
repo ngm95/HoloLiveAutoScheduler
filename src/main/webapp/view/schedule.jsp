@@ -17,6 +17,7 @@
 			<p id="live" style="margin-bottom: 0px">
 			<h3>라이브 중인 방송</h3>
 			</p>
+			
 			<div class="jumbotron-board">
 				<c:choose>
 					<c:when test="${not empty liveList}">

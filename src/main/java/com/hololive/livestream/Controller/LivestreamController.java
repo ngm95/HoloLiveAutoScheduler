@@ -69,8 +69,8 @@ public class LivestreamController {
 	@GetMapping("/videoInfo")
 	@ResponseBody
 	public String videoInfo() {
-		List<VideoDTO> liveList = videoServ.readAllInLive();
-		List<VideoDTO> upcomingList = videoServ.readAllInUpcomingIn1Hour();
+		List<VideoDTO> liveList = videoServ.readAllInLiveWithTooltip();
+		List<VideoDTO> upcomingList = videoServ.readAllInUpcomingIn1HourWithTooltip();
 		
 		List<VideoDTO> videos = new ArrayList<>();
 		for (VideoDTO live : liveList)
@@ -107,6 +107,8 @@ public class LivestreamController {
 	@ResponseBody
 	public String getCompletedListBetweenSomeday(@PathVariable("start") String start, @PathVariable("end") String end) {
 		Gson gson = new Gson();
+		start = start.substring(2).replaceAll("-", ".").concat(" 00:00");
+		end = end.substring(2).replaceAll("-", ".").concat(" 23:59");
 		return gson.toJson(videoServ.readAllInCompletedBetweenSomeday(start, end));
 	}
 }

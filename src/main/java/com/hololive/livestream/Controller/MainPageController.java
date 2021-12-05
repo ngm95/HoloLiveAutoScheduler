@@ -10,4 +10,9 @@ public class MainPageController {
 	public String mainPage() {
 		return "/index";
 	}
+	
+	@RequestMapping("/hello")
+	public String hello() {
+		return "hello";
+	}
 }

@@ -28,8 +28,16 @@ public class VideoService {
 		return videoDao.readAllInLive();
 	}
 	
+	public List<VideoDTO> readAllInLiveWithTooltip() {
+		return videoDao.readAllInLiveWithTooltip();
+	}
+	
 	public List<VideoDTO> readAllInUpcomingIn1Hour() {
 		return videoDao.readAllInUpcomingIn1Hour();
+	}
+	
+	public List<VideoDTO> readAllInUpcomingIn1HourWithTooltip() {
+		return videoDao.readAllInUpcomingIn1HourWithTooltip();
 	}
 	
 	public List<VideoDTO> readAllInCompleted() {

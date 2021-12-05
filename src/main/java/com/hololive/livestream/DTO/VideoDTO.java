@@ -16,4 +16,6 @@ public class VideoDTO {
 	String actualEndTime;
 	String thumbnailPath;
 	String profilePath;
+	String youtubePath;
+	String tooltip;
 }
