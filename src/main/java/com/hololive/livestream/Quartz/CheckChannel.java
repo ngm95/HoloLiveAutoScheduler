@@ -52,10 +52,9 @@ public class CheckChannel extends QuartzJobBean {
 			channelURL += "," + memberList.get(i).getChannelId();
 
 		format = new SimpleDateFormat("yy.MM.dd HH:mm");
-		APIDTO apiKey = videoDao.readMinQuotasAPIKey();
-		videoDao.increaseQuotas100(apiKey.getApiKey());
+		String apiKey = "da6221ef-1dd7-453d-8507-8bf11ae45146";
 		HttpRequest request = HttpRequest.newBuilder().uri(URI.create(channelURL))
-				.header("Content-Type", "application/json").header("X-APIKEY", apiKey.getApiKey())
+				.header("Content-Type", "application/json").header("X-APIKEY", apiKey)
 				.method("GET", HttpRequest.BodyPublishers.noBody()).build();
 		try {
 			HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
@@ -106,6 +105,7 @@ public class CheckChannel extends QuartzJobBean {
 			for (int j = 0; j < completeUpcoming.size(); j++) {
 				VideoDTO completed = completeUpcoming.get(j);
 				System.out.println("\t" + completed.getVideoId() + " : Upcoming -> Completed");
+				completed.setActualStartTime(completed.getScheduledStartTime());
 				videoDao.deleteUpcomingByVideoId(completed.getVideoId());
 				videoDao.createCompleted(completed);
 			}

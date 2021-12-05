@@ -168,7 +168,7 @@
 	<![CDATA[
 		SELECT Completed.memberName, Completed.channelId, Completed.videoId, Completed.scheduledStartTime, Completed.actualStartTime, Completed.thumbnailPath, Completed.actualEndTime, Member.profilePath, CONCAT("window.open('https://youtube.com/watch?v=", videoId, "')") as youtubePath
 		FROM Completed, Member
-		WHERE Completed.memberName = Member.memberName AND DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 1 DAY), '%y.%m.%d %H:%i') <= scheduledStartTime
+		WHERE Completed.memberName = Member.memberName AND DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 1 DAY), '%y.%m.%d %H:%i') <= actualStartTime
 		ORDER BY actualStartTime
 	]]>
 	</select>
@@ -177,7 +177,7 @@
 	<![CDATA[
 		SELECT Completed.memberName, Completed.channelId, Completed.videoId, Completed.scheduledStartTime, Completed.actualStartTime, Completed.thumbnailPath, Completed.actualEndTime, Member.profilePath, CONCAT("window.open('https://youtube.com/watch?v=", videoId, "')") as youtubePath
 		FROM Completed, Member
-		WHERE Completed.memberName = Member.memberName AND DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 3 DAY), '%y.%m.%d %H:%i') <= scheduledStartTime
+		WHERE Completed.memberName = Member.memberName AND DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 3 DAY), '%y.%m.%d %H:%i') <= actualStartTime
 		ORDER BY actualStartTime
 	]]>
 	</select>
@@ -186,7 +186,7 @@
 	<![CDATA[
 		SELECT Completed.memberName, Completed.channelId, Completed.videoId, Completed.scheduledStartTime, Completed.actualStartTime, Completed.thumbnailPath, Completed.actualEndTime, Member.profilePath, CONCAT("window.open('https://youtube.com/watch?v=", videoId, "')") as youtubePath
 		FROM Completed, Member
-		WHERE Completed.memberName = Member.memberName AND #{start} <= scheduledStartTime AND scheduledStartTime <= #{end}
+		WHERE Completed.memberName = Member.memberName AND #{start} <= actualStartTime AND actualStartTime <= #{end}
 		ORDER BY actualStartTime
 	]]>
 	</select>
