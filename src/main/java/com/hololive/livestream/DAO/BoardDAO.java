@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.hololive.livestream.DTO.BoardDTO;
-import com.hololive.livestream.util.BoardMinMax;
 
 @Repository
 public class BoardDAO {
@@ -20,6 +19,10 @@ public class BoardDAO {
 		template.insert(MAPPER + ".create", boardDto);
 	}
 	
+	public List<BoardDTO> readAllBoard() {
+		return template.selectList(MAPPER + ".readAllBoard");
+	}
+	
 	public BoardDTO readByBoardId(int boardId) {
 		return template.selectOne(MAPPER + ".readByBoardId", boardId);
 	}
@@ -28,16 +31,8 @@ public class BoardDAO {
 		return template.selectOne(MAPPER + ".readBoardId", boardDto);
 	}
 	
-	public List<BoardDTO> readLimitList(BoardMinMax bmm) {
-		return template.selectList(MAPPER + ".readLimitList", bmm);
-	}
-	
 	public List<BoardDTO> readAllLikeTitle(String title) {
 		return template.selectList(MAPPER + ".readAllLikeTitle", title);
-	}
-	
-	public int readMaxCount() {
-		return template.selectOne(MAPPER + ".readMaxCount");
 	}
 	
 	public void increaseLike(int boardId) {

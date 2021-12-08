@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.hololive.livestream.DAO.BoardDAO;
 import com.hololive.livestream.DTO.BoardDTO;
-import com.hololive.livestream.util.BoardMinMax;
 
 @Service
 public class BoardService {
@@ -18,24 +17,20 @@ public class BoardService {
 		boardDao.create(boardDto);
 	}
 	
-	public BoardDTO readByBoardId(int boardId) {
-		return boardDao.readByBoardId(boardId);
+	public List<BoardDTO> readAllBoard() {
+		return boardDao.readAllBoard();
 	}
 	
 	public int readBoardId(BoardDTO boardDto) {
 		return boardDao.readBoardId(boardDto);
 	}
 	
-	public List<BoardDTO> readLimitList(BoardMinMax bmm) {
-		return boardDao.readLimitList(bmm);
+	public BoardDTO readByBoardId(int boardId) {
+		return boardDao.readByBoardId(boardId);
 	}
 	
 	public List<BoardDTO> readAllLikeTitle(String title) {
 		return boardDao.readAllLikeTitle(title);
-	}
-	
-	public int readMaxCount() {
-		return boardDao.readMaxCount();
 	}
 	
 	public void increaseLike(int boardId) {

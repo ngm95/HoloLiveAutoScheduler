@@ -3,59 +3,23 @@ package com.hololive.livestream.Controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
-import com.hololive.livestream.DTO.VideoDTO;
+import com.hololive.livestream.DTO.VideoVue;
 import com.hololive.livestream.Service.VideoService;
 
 @Controller
 @RequestMapping("/livestream")
 public class LivestreamController {
 	
-	@ModelAttribute("upcomingList")
-	public List<VideoDTO> upcomingList() {
-		return videoServ.readAllInUpcoming();
-	}
-	
-	@ModelAttribute("liveList")
-	public List<VideoDTO> liveList() {
-		return videoServ.readAllInLive();
-	}
-	
-	@ModelAttribute("completedList")
-	public List<VideoDTO> completedList(HttpServletRequest request) {
-		if (request.getRequestURI().equals("/livestream/schedule"))
-			return videoServ.readAllInCompletedIn1Days();
-		else
-			return videoServ.readAllInCompleted();
-	}
-	
 	@Autowired
 	VideoService videoServ;
-	
-	/**
-	 * 방송 중인 영상, 예약된 영상, 하루 내에 종료한 영상 정보를 각각 모델에 담고
-	 * 스케줄표를 볼 수 있는 페이지로 넘어간다.
-	 */
-	@RequestMapping("/schedule")
-	public String schedule(Model model) {
-		return "/schedule";
-	}
-	
-	@RequestMapping("/multiview")
-	public String multiview(Model model) {
-		return "/multiview";
-	}
 	
 	/**
 	 * 현재 방송 중인 영상과 1시간 내에 시작할 영상을 리스트에 저장해서
@@ -69,46 +33,41 @@ public class LivestreamController {
 	@GetMapping("/videoInfo")
 	@ResponseBody
 	public String videoInfo() {
-		List<VideoDTO> liveList = videoServ.readAllInLiveWithTooltip();
-		List<VideoDTO> upcomingList = videoServ.readAllInUpcomingIn1HourWithTooltip();
+		List<VideoVue> liveList = videoServ.readAllInLive();
+		List<VideoVue> upcomingList = videoServ.readAllInUpcomingIn1Hour();
 		
-		List<VideoDTO> videos = new ArrayList<>();
-		for (VideoDTO live : liveList)
+		List<VideoVue> videos = new ArrayList<>();
+		for (VideoVue live : liveList)
 			videos.add(live);
-		for (VideoDTO upcoming : upcomingList)
+		for (VideoVue upcoming : upcomingList)
 			videos.add(upcoming);
 		
-		Gson gson = new Gson();
-		return gson.toJson(videos);
+		return new Gson().toJson(videos);
 	}
 	
 	@GetMapping("/getLiveList")
 	@ResponseBody
 	public String getLiveList() {
-		Gson gson = new Gson();
-		return gson.toJson(videoServ.readAllInLive());
+		return new Gson().toJson(videoServ.readAllInLive());
 	}
 	
 	@GetMapping("/getUpcomingList")
 	@ResponseBody
 	public String getUpcomingList() {
-		Gson gson = new Gson();
-		return gson.toJson(videoServ.readAllInUpcoming());
+		return new Gson().toJson(videoServ.readAllInUpcoming());
 	}
 	
 	@GetMapping("/getCompletedListIn3Day")
 	@ResponseBody
 	public String getCompletedListIn3Day() {
-		Gson gson = new Gson();
-		return gson.toJson(videoServ.readAllInCompletedIn3Days());
+		return new Gson().toJson(videoServ.readAllInCompletedIn3Days());
 	}
 	
 	@GetMapping("/getCompletedListBetweenSomeday/{start}/{end}")
 	@ResponseBody
 	public String getCompletedListBetweenSomeday(@PathVariable("start") String start, @PathVariable("end") String end) {
-		Gson gson = new Gson();
-		start = start.substring(2).replaceAll("-", ".").concat(" 00:00");
-		end = end.substring(2).replaceAll("-", ".").concat(" 23:59");
-		return gson.toJson(videoServ.readAllInCompletedBetweenSomeday(start, end));
+		start = start.concat(" 00:00:00");
+		end = end.concat(" 23:59:59");
+		return new Gson().toJson(videoServ.readAllInCompletedBetweenSomeday(start, end));
 	}
 }

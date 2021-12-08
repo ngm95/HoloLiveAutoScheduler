@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SearchForm {
+public class VideoSearch {
 	String start;
 	String end;
 }

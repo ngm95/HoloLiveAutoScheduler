@@ -17,11 +17,10 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hololive.livestream.DAO.VideoDAO;
-import com.hololive.livestream.DTO.APIDTO;
 import com.hololive.livestream.DTO.MemberDTO;
-import com.hololive.livestream.DTO.Video;
+import com.hololive.livestream.DTO.VideoAPI;
 import com.hololive.livestream.DTO.VideoDTO;
+import com.hololive.livestream.Service.VideoService;
 
 /**
  * @author ngm95
@@ -35,7 +34,7 @@ import com.hololive.livestream.DTO.VideoDTO;
 public class CheckChannel extends QuartzJobBean {
 
 	@Autowired
-	private VideoDAO videoDao;
+	private VideoService videoServ;
 
 	ObjectMapper objectMapper = new ObjectMapper();
 	
@@ -45,77 +44,73 @@ public class CheckChannel extends QuartzJobBean {
 		DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
 		System.out.println("\n" + (format.format(Calendar.getInstance().getTime()) + " : checkChannel"));
 
-		List<MemberDTO> memberList = videoDao.readAllMember();
+		List<MemberDTO> memberList = videoServ.readAllMember();
 
 		String channelURL = "https://holodex.net/api/v2/users/live?channels=" + memberList.get(0).getChannelId();
 		for (int i = 1; i < memberList.size(); i++)
 			channelURL += "," + memberList.get(i).getChannelId();
 
-		format = new SimpleDateFormat("yy.MM.dd HH:mm");
-		String apiKey = "da6221ef-1dd7-453d-8507-8bf11ae45146";
+		String apiKey = "ecc285ba-c0f9-417c-ad68-53260a19523f";
 		HttpRequest request = HttpRequest.newBuilder().uri(URI.create(channelURL))
 				.header("Content-Type", "application/json").header("X-APIKEY", apiKey)
 				.method("GET", HttpRequest.BodyPublishers.noBody()).build();
 		try {
 			HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-			List<Video> videos = objectMapper.readValue(response.body(), objectMapper.getTypeFactory().constructCollectionType(List.class, Video.class));
-			videoDao.setUpcomingAllRefreshedFalse();
-			videoDao.setLiveAllRefreshedFalse();
+			List<VideoAPI> videos = objectMapper.readValue(response.body(), objectMapper.getTypeFactory().constructCollectionType(List.class, VideoAPI.class));
+			videoServ.setUpcomingAllRefreshedFalse();
+			videoServ.setLiveAllRefreshedFalse();
 			for (int j = 0; j < videos.size(); j++) {
-				Video video = videos.get(j);
+				VideoAPI video = videos.get(j);
 				if (video.getStatus().equals("upcoming")) {								// 예약 상태라면 Upcoming에 삽입
-					Calendar now = Calendar.getInstance();
-					now.add(Calendar.DATE, 2);
-					String limit = format.format(now.getTime());
-					if (video.getAvailable_at().compareTo(limit) <= 0) {
+					Calendar limit = Calendar.getInstance();
+					limit.add(Calendar.DATE, 2);
+					if (video.getAvailable_at().before(limit.getTime())) {
 						VideoDTO reserved = new VideoDTO();
-						reserved.setMemberName(videoDao.readMemberNameByChannelId(video.getChannel().getId()));
+						reserved.setMemberName(videoServ.readMemberNameByChannelId(video.getChannel().getId()));
 						reserved.setChannelId(video.getChannel().getId());
 						reserved.setScheduledStartTime(video.getAvailable_at());
 						reserved.setProfilePath(video.getChannel().getPhoto());
 						reserved.setVideoId(video.getId());
-						reserved.setThumbnailPath("https://i.ytimg.com/vi/" + video.getId() + "/mqdefault.jpg");
 						System.out.println("\t" + video.getChannel().getId() + " : -> Upcoming");
-						videoDao.createUpcoming(reserved);
+						videoServ.createUpcoming(reserved);
 					}
 					else
 						System.out.println("\t" + video.getChannel().getId() + " : X-> Upcoming \n\t\t 너무 뒤에 예약되어 있습니다.(" + video.getAvailable_at() + ", " + limit + ")");
 				}
 				else if (video.getStatus().equals("live")) {							// 라이브 상태라면 Live에 삽입
-					VideoDTO live = videoDao.readUpcomingByVideoId(video.getId());
+					VideoDTO live = videoServ.readUpcomingByVideoId(video.getId());
 					if (live != null) {
 						live.setActualStartTime(video.getAvailable_at());
 					}
 					else {
 						live = new VideoDTO();
-						live.setMemberName(videoDao.readMemberNameByChannelId(video.getChannel().getId()));
+						live.setMemberName(videoServ.readMemberNameByChannelId(video.getChannel().getId()));
 						live.setChannelId(video.getChannel().getId());
 						live.setActualStartTime(video.getAvailable_at());
 						live.setProfilePath(video.getChannel().getPhoto());
 						live.setVideoId(video.getId());
-						live.setThumbnailPath("https://i.ytimg.com/vi/" + video.getId() + "/mqdefault.jpg");
 					}
 					System.out.println("\t" + video.getChannel().getId() + " : Upcoming -> Live");
-					videoDao.deleteUpcomingByVideoId(video.getId());
-					videoDao.createLive(live);
+					videoServ.deleteUpcomingByVideoId(video.getId());
+					videoServ.createLive(live);
 				}
 			}
 			
-			List<VideoDTO> completeUpcoming = videoDao.readAllInUpcomingNotRefreshed();
+			List<VideoDTO> completeUpcoming = videoServ.readAllInUpcomingNotRefreshed();
 			for (int j = 0; j < completeUpcoming.size(); j++) {
 				VideoDTO completed = completeUpcoming.get(j);
 				System.out.println("\t" + completed.getVideoId() + " : Upcoming -> Completed");
 				completed.setActualStartTime(completed.getScheduledStartTime());
-				videoDao.deleteUpcomingByVideoId(completed.getVideoId());
-				videoDao.createCompleted(completed);
+				videoServ.deleteUpcomingByVideoId(completed.getVideoId());
+				videoServ.createCompleted(completed);
 			}
 			
-			List<VideoDTO> completeLive = videoDao.readAllInLiveNotRefreshed();
+			List<VideoDTO> completeLive = videoServ.readAllInLiveNotRefreshed();
 			for (int j = 0; j < completeLive.size(); j++) {
 				VideoDTO completed = completeLive.get(j);
 				System.out.println("\t" + completed.getVideoId() + " : Live -> Completed");
-				videoDao.deleteLiveByVideoId(completed.getVideoId());
-				videoDao.createCompleted(completed);
+				videoServ.deleteLiveByVideoId(completed.getVideoId());
+				videoServ.createCompleted(completed);
 			}
 			
 		} catch (Exception e) {

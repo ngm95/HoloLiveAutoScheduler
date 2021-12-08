@@ -21,7 +21,7 @@ public class DBConfig {
 	@Primary
 	public DataSource dataSource() {
 		return DataSourceBuilder.create()
-				.url("jdbc:mysql://localhost:3306/hololive?verifyServerCertificate=false&useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8&allowPublicKeyRetrieval=true&useSSL=false")
+				.url("jdbc:mysql://localhost:3306/hololive?verifyServerCertificate=false&useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8&allowPublicKeyRetrieval=true&useSSL=false")
 				.driverClassName("com.mysql.cj.jdbc.Driver")
 				.username("hololive")
 				.password("hololive")

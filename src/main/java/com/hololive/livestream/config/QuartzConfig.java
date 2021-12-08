@@ -18,9 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
 import com.hololive.livestream.Quartz.CheckChannel;
-import com.hololive.livestream.Quartz.CheckLive;
-import com.hololive.livestream.Quartz.CheckUpcoming;
-import com.hololive.livestream.Quartz.CheckUpcomingAlive;
 
 @Configuration
 public class QuartzConfig {
@@ -37,27 +34,8 @@ public class QuartzConfig {
 			if (scheduler.checkExists(checkChannel.getKey()))
 				scheduler.deleteJob(checkChannel.getKey());
 			
-			JobDetail checkUpcomingAlive = buildJobDetail(CheckUpcomingAlive.class, "checkUpcomingAlive", "", new HashMap());
-			if (scheduler.checkExists(checkUpcomingAlive.getKey()))
-				scheduler.deleteJob(checkUpcomingAlive.getKey());
-			
-			JobDetail checkUpcoming = buildJobDetail(CheckUpcoming.class, "checkUpcoming", "", new HashMap());
-			if (scheduler.checkExists(checkUpcoming.getKey()))
-				scheduler.deleteJob(checkUpcoming.getKey());
-			
-			JobDetail checkLive = buildJobDetail(CheckLive.class, "checkLive", "", new HashMap());
-			if (scheduler.checkExists(checkLive.getKey()))
-				scheduler.deleteJob(checkLive.getKey());
-			
-				
-//			scheduler.scheduleJob(checkUpcomingAlive, buildCronJobTrigger("10 10 * * * ?", 10));	// 모든 시각 0분 10초에 시작해서 20분 간격으로 실행
-//			System.out.println("checkUpcomingAlive");
-//			scheduler.scheduleJob(checkChannel, buildCronJobTrigger("0 1/10 * * * ?", 15));			// 모든 시각 0분 20초마다 실행
-//			System.out.println("checkChannel");
-//			scheduler.scheduleJob(checkUpcoming, buildCronJobTrigger("40 34 * * * ?", 5));			// 모든 시각 0분 40초에 시작해서 5분 간격으로 실행
-//			System.out.println("checkUpcoming");
-//			scheduler.scheduleJob(checkLive, buildCronJobTrigger("50 10 * * * ?", 0));			// 모든 시각 0분 50초에 시작해서 20분 간격으로 실행
-//			System.out.println("checkLive");
+			scheduler.scheduleJob(checkChannel, buildCronJobTrigger("0 0/2 * * * ?", 15));			// 모든 시각 0분 20초마다 실행
+			System.out.println("checkChannel");
 			
 		} catch (SchedulerException se) {
 			System.out.println("error");

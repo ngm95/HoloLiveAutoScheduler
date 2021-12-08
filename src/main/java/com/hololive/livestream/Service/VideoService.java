@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.hololive.livestream.DAO.VideoDAO;
-import com.hololive.livestream.DTO.APIDTO;
 import com.hololive.livestream.DTO.MemberDTO;
 import com.hololive.livestream.DTO.VideoDTO;
+import com.hololive.livestream.DTO.VideoVue;
 
 @Service
 public class VideoService {
@@ -16,61 +16,73 @@ public class VideoService {
 	@Autowired
 	private VideoDAO videoDao;
 	
-	public List<MemberDTO> readNotInUpcomingOrLive() {
-		return videoDao.readNotInUpcomingOrLive();
-	}
-	
-	public List<VideoDTO> readAllInUpcoming() {
+	public List<VideoVue> readAllInUpcoming() {
 		return videoDao.readAllInUpcoming();
 	}
 	
-	public List<VideoDTO> readAllInLive() {
-		return videoDao.readAllInLive();
-	}
-	
-	public List<VideoDTO> readAllInLiveWithTooltip() {
-		return videoDao.readAllInLiveWithTooltip();
-	}
-	
-	public List<VideoDTO> readAllInUpcomingIn1Hour() {
+	public List<VideoVue> readAllInUpcomingIn1Hour() {
 		return videoDao.readAllInUpcomingIn1Hour();
 	}
 	
-	public List<VideoDTO> readAllInUpcomingIn1HourWithTooltip() {
-		return videoDao.readAllInUpcomingIn1HourWithTooltip();
+	public List<VideoVue> readAllInLive() {
+		return videoDao.readAllInLive();
 	}
 	
-	public List<VideoDTO> readAllInCompleted() {
-		return videoDao.readAllInCompleted();
-	}
-	
-	public List<VideoDTO> readAllInCompletedIn1Days() {
-		return videoDao.readAllInCompletedIn1Days();
-	}
-	
-	public List<VideoDTO> readAllInCompletedIn3Days() {
+	public List<VideoVue> readAllInCompletedIn3Days() {
 		return videoDao.readAllInCompletedIn3Days();
 	}
 	
-	public List<VideoDTO> readAllInCompletedBetweenSomeday(String start, String end) {
+	public List<VideoVue> readAllInCompletedBetweenSomeday(String start, String end) {
 		return videoDao.readAllInCompletedBetweenSomeday(start, end);
 	}
 	
-	public APIDTO readMinQuotasAPIKey() {
-		return videoDao.readMinQuotasAPIKey();
+	
+	
+	public void createUpcoming(VideoDTO videoDto) {
+		videoDao.createUpcoming(videoDto);
 	}
 	
-	public void increaseQuotas100(String apiKey) {
-		videoDao.increaseQuotas100(apiKey);
+	public void createLive(VideoDTO videoDto) {
+		videoDao.createLive(videoDto);
 	}
 	
-	public void increaseQuotas1(String apiKey) {
-		videoDao.increaseQuotas1(apiKey);
+	public void createCompleted(VideoDTO videoDto) {
+		videoDao.createCompleted(videoDto);
 	}
 	
-	public void resetQuota() {
-		videoDao.resetQuota();
+	public List<MemberDTO> readAllMember() {
+		return videoDao.readAllMember();
 	}
 	
+	public VideoDTO readUpcomingByVideoId(String videoId) {
+		return videoDao.readUpcomingByVideoId(videoId);
+	}
 	
+	public String readMemberNameByChannelId(String channelId) {
+		return videoDao.readMemberNameByChannelId(channelId);
+	}
+	
+	public List<VideoDTO> readAllInUpcomingNotRefreshed() {
+		return videoDao.readAllInUpcomingNotRefreshed();
+	}
+	
+	public List<VideoDTO> readAllInLiveNotRefreshed() {
+		return videoDao.readAllInLiveNotRefreshed();
+	}
+	
+	public void deleteUpcomingByVideoId(String videoId) {
+		videoDao.deleteUpcomingByVideoId(videoId);;
+	}
+	
+	public void deleteLiveByVideoId(String videoId) {
+		videoDao.deleteLiveByVideoId(videoId);
+	}
+	
+	public void setUpcomingAllRefreshedFalse() {
+		videoDao.setUpcomingAllRefreshedFalse();
+	}
+	
+	public void setLiveAllRefreshedFalse() {
+		videoDao.setLiveAllRefreshedFalse();
+	}
 }

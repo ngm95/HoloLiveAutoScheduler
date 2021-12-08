@@ -1,5 +1,7 @@
 package com.hololive.livestream.DTO;
 
+import java.util.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,11 +13,8 @@ public class VideoDTO {
 	String memberName;
 	String channelId;
 	String videoId;
-	String scheduledStartTime;
-	String actualStartTime;
-	String actualEndTime;
-	String thumbnailPath;
+	Date scheduledStartTime;
+	Date actualStartTime;
+	Date actualEndTime;
 	String profilePath;
-	String youtubePath;
-	String tooltip;
 }

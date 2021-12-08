@@ -3,6 +3,7 @@ package com.hololive.livestream.DTO;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.TimeZone;
 
 import lombok.AllArgsConstructor;
@@ -12,18 +13,18 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Video {
+public class VideoAPI {
 	String memberName;
 	String id;
 	String title;
 	String type;
 	String topic_id;
 	String status;
-	String published_at;
-	String available_at;
-	String start_scheduled;
-	String start_actual;
-	String end_actual;
+	Date published_at;
+	Date available_at;
+	Date start_scheduled;
+	Date start_actual;
+	Date end_actual;
 	int duration;
 	int live_viewers;
 	String description;
@@ -33,8 +34,7 @@ public class Video {
 		if (published_at != null) {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 			sdf.setTimeZone(TimeZone.getTimeZone("KST"));
-			DateFormat format = new SimpleDateFormat("yy.MM.dd HH:mm");
-			this.published_at = format.format(sdf.parse(published_at)).toString();
+			this.published_at = sdf.parse(published_at);
 		}
 	}
 
@@ -42,8 +42,7 @@ public class Video {
 		if (available_at != null) {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 			sdf.setTimeZone(TimeZone.getTimeZone("KST"));
-			DateFormat format = new SimpleDateFormat("yy.MM.dd HH:mm");
-			this.available_at = format.format(sdf.parse(available_at)).toString();
+			this.available_at = sdf.parse(available_at);
 		}
 	}
 
@@ -51,8 +50,7 @@ public class Video {
 		if (start_scheduled != null) {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 			sdf.setTimeZone(TimeZone.getTimeZone("KST"));
-			DateFormat format = new SimpleDateFormat("yy.MM.dd HH:mm");
-			this.start_scheduled = format.format(sdf.parse(start_scheduled)).toString();
+			this.start_scheduled = sdf.parse(start_scheduled);
 		}
 	}
 
@@ -60,8 +58,7 @@ public class Video {
 		if (start_actual != null) {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 			sdf.setTimeZone(TimeZone.getTimeZone("KST"));
-			DateFormat format = new SimpleDateFormat("yy.MM.dd HH:mm");
-			this.start_actual = format.format(sdf.parse(start_actual)).toString();
+			this.start_actual = sdf.parse(start_actual);
 		}
 	}
 
@@ -69,8 +66,7 @@ public class Video {
 		if (end_actual != null) {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 			sdf.setTimeZone(TimeZone.getTimeZone("KST"));
-			DateFormat format = new SimpleDateFormat("yy.MM.dd HH:mm");
-			this.end_actual = format.format(sdf.parse(end_actual)).toString();
+			this.end_actual = sdf.parse(end_actual);
 		}
 	}
 }
