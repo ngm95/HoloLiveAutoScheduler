@@ -85,4 +85,9 @@ public class VideoService {
 	public void setLiveAllRefreshedFalse() {
 		videoDao.setLiveAllRefreshedFalse();
 	}
+	
+	
+	public VideoDTO readCompletedByVideoId(String videoId) {
+		return videoDao.readCompletedByVideoId(videoId);
+	}
 }
