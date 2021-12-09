@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +15,7 @@ import com.google.gson.Gson;
 import com.hololive.livestream.DTO.VideoVue;
 import com.hololive.livestream.Service.VideoService;
 
+@CrossOrigin(origins="*", allowedHeaders="*")
 @Controller
 @RequestMapping("/livestream")
 public class LivestreamController {

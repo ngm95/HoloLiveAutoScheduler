@@ -50,7 +50,7 @@ public class CheckChannel extends QuartzJobBean {
 		for (int i = 1; i < memberList.size(); i++)
 			channelURL += "," + memberList.get(i).getChannelId();
 
-		String apiKey = "ecc285ba-c0f9-417c-ad68-53260a19523f";
+		String apiKey = "da6221ef-1dd7-453d-8507-8bf11ae45146";
 		HttpRequest request = HttpRequest.newBuilder().uri(URI.create(channelURL))
 				.header("Content-Type", "application/json").header("X-APIKEY", apiKey)
 				.method("GET", HttpRequest.BodyPublishers.noBody()).build();
