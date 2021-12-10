@@ -10,4 +10,10 @@ import lombok.NoArgsConstructor;
 public class VideoSearch {
 	String start;
 	String end;
+	int offset;
+	
+	public VideoSearch(String start, String end) {
+		this.start = start;
+		this.end = end;
+	}
 }

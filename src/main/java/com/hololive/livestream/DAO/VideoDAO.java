@@ -34,8 +34,12 @@ public class VideoDAO {
 		return template.selectList(MAPPER + ".readAllInCompletedIn3Days");
 	}
 	
-	public List<VideoVue> readAllInCompletedBetweenSomeday(String start, String end) {
-		return template.selectList(MAPPER + ".readAllInCompletedBetweenSomeday", new VideoSearch(start, end));
+	public List<VideoVue> readAllInCompletedBetweenSomeday(String start, String end, int offset) {
+		return template.selectList(MAPPER + ".readAllInCompletedBetweenSomeday", new VideoSearch(start, end, offset));
+	}
+	
+	public int readAllInCompletedSize(String start, String end) {
+		return template.selectOne(MAPPER + ".readAllInCompletedSize", new VideoSearch(start, end));
 	}
 	
 	

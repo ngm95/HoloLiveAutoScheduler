@@ -32,10 +32,13 @@ public class VideoService {
 		return videoDao.readAllInCompletedIn3Days();
 	}
 	
-	public List<VideoVue> readAllInCompletedBetweenSomeday(String start, String end) {
-		return videoDao.readAllInCompletedBetweenSomeday(start, end);
+	public List<VideoVue> readAllInCompletedBetweenSomeday(String start, String end, int offset) {
+		return videoDao.readAllInCompletedBetweenSomeday(start, end, offset);
 	}
 	
+	public int readAllInCompletedSize(String start, String end) {
+		return videoDao.readAllInCompletedSize(start, end);
+	}
 	
 	
 	public void createUpcoming(VideoDTO videoDto) {

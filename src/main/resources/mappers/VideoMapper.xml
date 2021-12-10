@@ -45,6 +45,15 @@
 		FROM Completed, Member
 		WHERE Completed.memberName = Member.memberName AND #{start} <= actualStartTime AND actualStartTime <= #{end}
 		ORDER BY actualStartTime
+		LIMIT #{offset}, 50
+	]]>
+	</select>
+	
+	<select id="readAllInCompletedSize" resultType="int">
+	<![CDATA[
+		SELECT count(*)
+		FROM Completed
+		WHERE #{start} <= actualStartTime AND actualStartTime <= #{end}
 	]]>
 	</select>
 	

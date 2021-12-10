@@ -65,11 +65,19 @@ public class LivestreamController {
 		return new Gson().toJson(videoServ.readAllInCompletedIn3Days());
 	}
 	
-	@GetMapping("/getCompletedListBetweenSomeday/{start}/{end}")
+	@GetMapping("/getCompletedListSize/{start}/{end}")
 	@ResponseBody
 	public String getCompletedListBetweenSomeday(@PathVariable("start") String start, @PathVariable("end") String end) {
 		start = start.concat(" 00:00:00");
 		end = end.concat(" 23:59:59");
-		return new Gson().toJson(videoServ.readAllInCompletedBetweenSomeday(start, end));
+		return Integer.toString(videoServ.readAllInCompletedSize(start, end));
+	}
+	
+	@GetMapping("/getCompletedListBetweenSomeday/{start}/{end}/{offset}")
+	@ResponseBody
+	public String getCompletedListBetweenSomeday(@PathVariable("start") String start, @PathVariable("end") String end, @PathVariable("offset") int offset) {
+		start = start.concat(" 00:00:00");
+		end = end.concat(" 23:59:59");
+		return new Gson().toJson(videoServ.readAllInCompletedBetweenSomeday(start, end, offset));
 	}
 }
